@@ -105,3 +105,6 @@ ENV/
 
 # Glade
 *.glade~
+
+# project
+/db.zip
