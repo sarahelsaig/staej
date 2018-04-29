@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 
+
 def replace_widget(old, new):
     parent= old.get_parent()
 

@@ -1,100 +1,19 @@
-import sys
 import model
 import model.database
-from gi.repository import GObject, Gst, Gtk
+from gi.repository import GObject, Gst, Gtk, GdkX11, GstVideo
 import gui_extra
 import os
 from peewee import fn
+from video_player import VideoPlayer
+from IPython import embed
+
 
 DIR_CONFIG = 'dir_config'
-
-# Needed for window.get_xid(), xvimagesink.set_window_handle(), respectively:
-from gi.repository import GdkX11, GstVideo
 
 secondsToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 60, s % 60)
 
 Gst.FRAME = Gst.SECOND // 30
 
-from IPython import embed
-
-class VideoPlayer :
-    def __init__(self):
-        self.playbin = Gst.ElementFactory.make('playbin', None)
-        if not self.playbin :
-            sys.stderr.write("'playbin' gstreamer plugin missing\n")
-            sys.exit(1)
-
-        self.pipeline = Gst.Pipeline()
-        self.bus = self.pipeline.get_bus()
-        self.bus.add_signal_watch()
-        self.bus.connect('message::eos', self.onEOS)
-        self.bus.connect('message::error', self.onVideoError)
-        self.bus.enable_sync_message_emission()
-        self.bus.connect('sync-message::element', self.onSyncMessage)
-        self.pipeline.add(self.playbin)
-
-    @property
-    def video_playing(self):
-        return Gst.State.PLAYING in self.pipeline.get_state(10000)
-
-    @video_playing.setter
-    def video_playing(self, value):
-        self.pipeline.set_state(Gst.State.PLAYING if value else Gst.State.PAUSED)
-
-
-    def load(self, path):
-        uri = path if Gst.uri_is_valid(path) else Gst.filename_to_uri(path)
-        self.playbin.set_property('uri', uri)
-        self.play()
-        self.pause()
-
-    def playpause(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
-
-        self.video_playing = not self.video_playing
-
-    def play(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
-        self.pipeline.set_state(Gst.State.PLAYING)
-
-    def pause(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
-        self.pipeline.set_state(Gst.State.PAUSED)
-
-    def relativeSeek(self, button):
-        success, position = self.pipeline.query_position(Gst.Format.TIME)
-        if not success: return
-
-        offset = int(button.get_name().replace('seek:','')) * Gst.FRAME
-        self.seek(position + offset)
-
-        #print (position, offset, (position + offset) // Gst.FRAME)
-        success, position = self.pipeline.query_position(Gst.Format.TIME)
-        #print (position, offset, position // Gst.FRAME)
-
-        #embed()
-
-    def seek(self, units, format = Gst.Format.TIME):
-        return self.pipeline.seek_simple(
-            format,
-            Gst.SeekFlags.FLUSH, # | Gst.SeekFlags.ACCURATE,
-            units)
-
-    def onSyncMessage(self, bus, msg):
-        if msg.get_structure().get_name() == 'prepare-window-handle':
-            print('prepare-window-handle')
-            msg.src.set_window_handle(self.xid)
-
-    def onEOS(self, bus, msg):
-        print('onEOS(): seeking to start of video')
-        self.pipeline.seek_simple(
-            Gst.Format.TIME,
-            Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT,
-            0
-        )
-
-    def onVideoError(self, bus, msg):
-        print('onVideoError():', msg.parse_error())
 
 class Handler (VideoPlayer):
 
