@@ -1,7 +1,18 @@
 import sys
+from gi.repository import GObject, Gtk, Gst, GstVideo, GdkX11
+from gnotifier import GNotifier
 
-class VideoPlayer :
-    def __init__(self):
+
+Gst.FRAME = Gst.SECOND // 30
+
+
+class VideoPlayer(GNotifier) :
+    __video_duration = 0
+    __video_position = 0
+
+    def __init__(self, **properties):
+        GNotifier.__init__(self, **properties)
+
         self.playbin = Gst.ElementFactory.make('playbin', None)
         if not self.playbin :
             sys.stderr.write("'playbin' gstreamer plugin missing\n")
@@ -16,10 +27,7 @@ class VideoPlayer :
         self.bus.connect('sync-message::element', self.onSyncMessage)
         self.pipeline.add(self.playbin)
 
-        self._video_duration = 0
-        self._video_position = 0
-
-    @property
+    @GObject.Property(type=bool, default=False)
     def video_playing(self):
         return Gst.State.PLAYING in self.pipeline.get_state(10000)
 
@@ -30,21 +38,22 @@ class VideoPlayer :
     @property
     def video_duration(self):
         success, duration = self.pipeline.query_duration(Gst.Format.TIME)
-        if success and self._video_duration != duration :
-            self._video_duration = duration
+        if success and self.__video_duration != duration :
+            self.__video_duration = duration
             # send signal
-        return self._video_duration
+        return self.__video_duration
 
-    @property
+    @GObject.Property(type=GObject.TYPE_LONG)
     def video_position(self):
         success, position = self.pipeline.query_position(Gst.Format.TIME)
-        if success and position != self._video_position:
-            self._video_position = position
-            # send signal
-        return self._video_position
+        if success and position != self.__video_position:
+            print (position)
+            self.__video_position = position
+        return self.__video_position
 
     @video_position.setter
     def video_position(self, value):
+        print (value)
         self.seek(value, Gst.Format.TIME)
 
     def load(self, path):

@@ -17,5 +17,5 @@ if not os.path.exists(file_db) :
     print('The database does not exist. Please run enter-staej.py with one or more JIGSAWS zip files as arguments!')
     sys.exit(1)
 
-import gui_handler
-gui_handler.start(locals())
+import handler
+handler.start(locals())
