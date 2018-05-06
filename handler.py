@@ -50,6 +50,9 @@ class Handler (VideoPlayer):
                       set_converter=lambda value: '||' if value else '|>')
         self.register("video_search", builder.get_object("entry_video_search"))
 
+        # remove the menu bar away as we don't really use it yet
+        builder.get_object("main_menubar").destroy()
+
         # set up video store filter
         self.video_store.filter = self.video_store.filter_new()
         builder.get_object("treeview_video").set_model(self.video_store.filter)
