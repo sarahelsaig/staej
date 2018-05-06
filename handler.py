@@ -38,6 +38,7 @@ class Handler (VideoPlayer):
         self.main_window = builder.get_object("main_window")
         self.scale_video_position = builder.get_object("scale_video_position")
         self.video_player = builder.get_object("video_player")
+        self.label_subject = builder.get_object("label_subject")
 
         # gui binding
         self.register("task_name", builder.get_object("label_task_name"))
@@ -136,16 +137,18 @@ class Handler (VideoPlayer):
         return query in model[iter][0].lower()
 
 
+    def getGrs(self, score, dictionary):
+        ret = None
+        if dictionary: ret = dictionary.get(score)
+        return ret or model.database.GRS[score]
 
-    def updateVideo(self, video = None):
-        if video is None : video = self.video
-
+    def updateVideo(self):
         # fill in general part of Video Info
-        self.task_name = self.tasks[video.task_id]
-        self.video_name = video.file_name
+        self.task_name = self.tasks[self.video.task_id]
+        self.video_name = self.video.file_name
         self.video_length = (model.database.Kinematic
                 .select()
-                .where(model.database.Kinematic.video_id == video.id)
+                .where(model.database.Kinematic.video_id == self.video.id)
                 .select(fn.Max(model.database.Kinematic.frame))
                 .scalar()
             )
@@ -161,9 +164,21 @@ class Handler (VideoPlayer):
 
         # update the Gestures tab
         self.gesture_store.clear()
-        for x in model.database.Transcript.select().where(model.database.Transcript.video_id == video.id).order_by(model.database.Transcript.start) :
+        for x in model.database.Transcript.select().where(model.database.Transcript.video_id == self.video.id).order_by(model.database.Transcript.start) :
             self.gesture_store.append([x.gesture_id, self.gestures[x.gesture_id], x.start, x.end])
 
+        self.label_subject.set_markup('\n'.join([
+                          '<b>Subject Code</b>: ' + self.video.file_name.rpartition('_')[2][0],
+                          '<b>Trial</b>: ' + self.video.file_name[-1],
+                          '<b>Skill Level</b>: ' + model.database.SKILL_LEVELS_DICT[self.video.skill_level].replace('<', '&lt;').replace('>', '&gt;'),
+                          '<b>Global Rating Score</b>: {}/30 ({:.2f}%)'.format(self.video.grs_total, int(self.video.grs_total) / 0.30 ),
+                          '    <b>Respect for tissue</b>: ' + self.getGrs(self.video.grs_tissue, model.database.GRS_TISSUE),
+                          '    <b>Suture/needle handling</b>: ' + self.getGrs(self.video.grs_suture, model.database.GRS_SUTURE),
+                          '    <b>Time and motion</b>: ' + self.getGrs(self.video.grs_time, model.database.GRS_TIME),
+                          '    <b>Flow of operation</b>: ' + self.getGrs(self.video.grs_flow, model.database.GRS_FLOW),
+                          '    <b>Overall performance</b>: ' + self.getGrs(self.video.grs_performance, None),
+                          '    <b>Quality of final product</b>: ' + self.getGrs(self.video.grs_quality, None),
+                      ]))
 
 
 def start(config) :

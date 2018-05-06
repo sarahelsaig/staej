@@ -1,6 +1,45 @@
 import peewee
 
 SKILL_LEVELS = ('N', 'I', 'E')
+SKILL_LEVELS_DESCRIPTION = ('novice (<10hrs)', 'intermediate (10-100hrs)', 'expert (>100hrs)')
+SKILL_LEVELS_DICT = {
+    '1': SKILL_LEVELS_DESCRIPTION[0],
+    '2': SKILL_LEVELS_DESCRIPTION[1],
+    '3': SKILL_LEVELS_DESCRIPTION[2],
+}
+
+GRS = {
+    '1' : 'Very poor',
+    '2' : 'Somewhat poor',
+    '3' : 'Competent',
+    '4' : 'Somewhat superior',
+    '5' : 'Clearly superior',
+}
+
+GRS_TISSUE = {
+    '1': 'Frequently used unnecessary force on tissue;',
+    '3': 'Careful tissue handling but occasionally caused inadvertent damage',
+    '5': 'Consistent appropriate tissue handling',
+}
+
+GRS_SUTURE = {
+    '1' : 'Awkward and unsure with repeated entanglement and poor knot tying;',
+    '3' : 'Majority of knots placed correctly with appropriate tension;',
+    '5' : 'Excellent suture control',
+}
+
+GRS_TIME = {
+    '1' : 'Frequently interrupted flow to discuss the next move',
+    '3' : 'Demonstrated some forward planning and reasonable procedure progression',
+    '5' : 'Obviously planned course of operation with efficient transitions between moves',
+}
+
+GRS_FLOW = {
+    '1' : 'Frequently interrupted flow to discuss the next move',
+    '3' : 'Demonstrated some forward planning and reasonable procedure progression',
+    '5' : 'Obviously planned course of operation with efficient transitions between moves',
+}
+
 
 FILE_DB = 'file_db'
 def connectFileDb(config) :
