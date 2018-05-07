@@ -24,307 +24,307 @@
     <data>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_POS_X</col>
-        <col id="1">5</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_POS_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_POS_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_11</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_12</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_13</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_21</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_22</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_23</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_31</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_32</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_ROT_33</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_A</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_B</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_C</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_VELOCITY_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_LEFT_GRIPPER</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_POS_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_POS_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_POS_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_11</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_12</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_13</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_21</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_22</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_23</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_31</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_32</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_ROT_33</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_A</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_B</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_C</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_VELOCITY_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">MTM_RIGHT_GRIPPER</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_POS_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_POS_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_POS_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_11</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_12</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_13</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_21</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_22</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_23</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_31</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_32</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_ROT_33</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_A</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_B</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_C</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_VELOCITY_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_LEFT_GRIPPER</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_POS_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_POS_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_POS_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_11</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_12</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_13</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_21</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_22</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_23</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_31</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_32</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_ROT_33</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_A</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_B</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_C</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_X</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_Y</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_VELOCITY_Z</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
       <row>
         <col id="0" translatable="yes">PSM_RIGHT_GRIPPER</col>
-        <col id="1">0</col>
+        <col id="1">50</col>
       </row>
     </data>
   </object>
@@ -1046,22 +1046,14 @@
                             </child>
                             <child>
                               <object class="GtkTreeViewColumn">
-                                <property name="sizing">autosize</property>
-                                <property name="title" translatable="yes">Name</property>
-                                <child>
-                                  <object class="GtkCellRendererText"/>
-                                  <attributes>
-                                    <attribute name="text">0</attribute>
-                                  </attributes>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkTreeViewColumn">
                                 <property name="resizable">True</property>
                                 <property name="title" translatable="yes">Value</property>
                                 <child>
                                   <object class="GtkCellRendererProgress" id="kinematic_cellrenderer"/>
+                                  <attributes>
+                                    <attribute name="text">0</attribute>
+                                    <attribute name="value">1</attribute>
+                                  </attributes>
                                 </child>
                               </object>
                             </child>
