@@ -4,7 +4,7 @@ from gi.repository import GObject, Gst, Gtk
 import os
 from peewee import fn
 from videoplayer import VideoPlayer
-from IPython import embed
+#from IPython import embed
 
 
 DIR_CONFIG = 'dir_config'

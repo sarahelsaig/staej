@@ -1,10 +1,23 @@
 import sys
-from gi.repository import GObject, Gtk, Gst, GstVideo, GdkX11
+from gi.repository import GObject, Gtk, Gst, GstVideo
 from gnotifier import GNotifier
 
 
 Gst.FRAME = Gst.SECOND // 30
 
+def getXid(window) :
+    if sys.platform == "win32":
+        if not window.ensure_native():
+            print("Error - video playback requires a native window")
+        import ctypes
+        ctypes.pythonapi.PyCapsule_GetPointer.restype = ctypes.c_void_p
+        ctypes.pythonapi.PyCapsule_GetPointer.argtypes = [ctypes.py_object]
+        gpointer = ctypes.pythonapi.PyCapsule_GetPointer(window.__gpointer__, None)
+        gdkdll = ctypes.CDLL ("libgdk-3-0.dll")
+        return gdkdll.gdk_win32_window_get_handle(gpointer)
+    else:
+        from gi.repository import GdkX11
+        return window.get_xid()
 
 class VideoPlayer(GNotifier) :
     __video_duration = 0
@@ -63,16 +76,16 @@ class VideoPlayer(GNotifier) :
         self.pause()
 
     def playpause(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
+        self.xid = getXid(self.video_player.get_property('window'))
 
         self.video_playing = not self.video_playing
 
     def play(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
+        self.xid = getXid(self.video_player.get_property('window'))
         self.pipeline.set_state(Gst.State.PLAYING)
 
     def pause(self, *args):
-        self.xid = self.video_player.get_property('window').get_xid()
+        self.xid = getXid(self.video_player.get_property('window'))
         self.pipeline.set_state(Gst.State.PAUSED)
 
     def relativeSeek(self, button):
