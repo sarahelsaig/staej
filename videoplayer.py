@@ -22,6 +22,7 @@ def getXid(window) :
 class VideoPlayer(GNotifier) :
     __video_duration = 0
     __video_position = 0
+    __video_position_timeout = None
 
     def __init__(self, **properties):
         GNotifier.__init__(self, **properties)
@@ -39,6 +40,12 @@ class VideoPlayer(GNotifier) :
         self.bus.enable_sync_message_emission()
         self.bus.connect('sync-message::element', self.onSyncMessage)
         self.pipeline.add(self.playbin)
+
+        GObject.timeout_add(100, self.triggerVideoPosition)
+
+    def triggerVideoPosition(self):
+        self.set_property("video-position", -1)
+        return True
 
     @GObject.Property(type=bool, default=False)
     def video_playing(self):
@@ -60,13 +67,13 @@ class VideoPlayer(GNotifier) :
     def video_position(self):
         success, position = self.pipeline.query_position(Gst.Format.TIME)
         if success and position != self.__video_position:
-            print (position)
+            #print (position)
             self.__video_position = position
         return self.__video_position
 
     @video_position.setter
     def video_position(self, value):
-        print (value)
+        if value < 0 : return
         self.seek(value, Gst.Format.TIME)
 
     def load(self, path):
@@ -82,11 +89,11 @@ class VideoPlayer(GNotifier) :
 
     def play(self, *args):
         self.xid = getXid(self.video_player.get_property('window'))
-        self.pipeline.set_state(Gst.State.PLAYING)
+        self.video_playing = True
 
     def pause(self, *args):
         self.xid = getXid(self.video_player.get_property('window'))
-        self.pipeline.set_state(Gst.State.PAUSED)
+        self.video_playing = False
 
     def relativeSeek(self, button):
         offset = int(button.get_name().replace('seek:','')) * Gst.FRAME

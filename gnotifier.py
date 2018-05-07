@@ -56,7 +56,8 @@ class GNotifier(GObject.Object) :
                     if (isinstance(widget, t)) :
                         if len(self.widget_types[t]) < 3:
                             self.widget_types[t] = list(self.widget_types[t]) + [None, None]
-                        (update, signal_name, signal_handler) = self.widget_types[t][:3]
+                        (getUpdate, signal_name, signal_handler) = self.widget_types[t][:3]
+                        update = getUpdate(widget)
                         if signal_name and signal_handler:
                             if get_converter is None :
                                 widget_handler = lambda sender, gtypespec : self.__updateFromValue(

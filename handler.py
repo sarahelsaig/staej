@@ -9,10 +9,9 @@ from videoplayer import VideoPlayer
 
 DIR_CONFIG = 'dir_config'
 
-secondsToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 60, s % 60)
+framesToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 1800, (s // 30) % 60)
 
-
-
+GESTURE_ID, GESTURE_NAME, GESTURE_START, GESTURE_END = range(4)
 class Handler (VideoPlayer):
     __task_name = ""
     __video_name = ""
@@ -44,11 +43,23 @@ class Handler (VideoPlayer):
         self.register("task_name", builder.get_object("label_task_name"))
         self.register("video_name", builder.get_object("label_video_name"))
         self.register("video_length", builder.get_object("label_video_length"),
-                      set_converter=lambda value: secondsToMinutesStr(value // 30))
+                      set_converter=framesToMinutesStr)
         self.register("video_position", self.scale_video_position)
         self.register("video_playing", builder.get_object("button_playpause").get_child(),
                       set_converter=lambda value: '||' if value else '|>')
         self.register("video_search", builder.get_object("entry_video_search"))
+
+        getGestureConverter = lambda n, f = str : lambda value :\
+            ([f(x[n]) for x in self.gesture_spans if x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [''])[0]
+        self.register("video_position", builder.get_object("current_gesture_name"),
+                      set_converter=getGestureConverter(GESTURE_NAME))
+        self.register("video_position", builder.get_object("current_gesture_start"),
+                      set_converter=getGestureConverter(GESTURE_START, framesToMinutesStr))
+        self.register("video_position", builder.get_object("current_gesture_end"),
+                      set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
+        self.register("video_position", builder.get_object("current_gesture_end"),
+                      set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
+        self.register("video_position", self.updateKinematicStore)
 
         # remove the menu bar away as we don't really use it yet
         builder.get_object("main_menubar").destroy()
@@ -76,6 +87,10 @@ class Handler (VideoPlayer):
         self.gestures = dict()
         for x in model.database.Gesture.select():
             self.gestures[x.id] = x.description
+        self.gesture_spans = list()
+
+        # kinematics
+        self.kinematics = dict()
 
         # set up video player
         self.main_window.show_all()
@@ -174,9 +189,13 @@ class Handler (VideoPlayer):
 
         # update the Gestures tab
         self.gesture_store.clear()
+        self.gesture_spans = list()
         for x in model.database.Transcript.select().where(model.database.Transcript.video_id == self.video.id).order_by(model.database.Transcript.start) :
-            self.gesture_store.append([x.gesture_id, self.gestures[x.gesture_id], x.start, x.end])
+            gesture_store_item = [x.gesture_id, self.gestures[x.gesture_id], x.start, x.end]
+            self.gesture_store.append(gesture_store_item)
+            self.gesture_spans.append(gesture_store_item)
 
+        # update subject info
         self.label_subject.set_markup('\n'.join([
                           '<b>Subject Code</b>: ' + self.video.file_name.rpartition('_')[2][0],
                           '<b>Trial</b>: ' + self.video.file_name[-1],
@@ -189,6 +208,96 @@ class Handler (VideoPlayer):
                           '    <b>Overall performance</b>: ' + self.getGrs(self.video.grs_performance, None),
                           '    <b>Quality of final product</b>: ' + self.getGrs(self.video.grs_quality, None),
                       ]))
+
+        # download kinematics
+        self.kinematics = dict()
+        for x in model.database.Kinematic.select().where(model.database.Kinematic.video_id == self.video.id).order_by(model.database.Kinematic.frame) :
+            self.kinematics[x.frame] = x
+
+    def updateKinematicStore(self, time):
+        frame = time // Gst.FRAME
+        if frame not in self.kinematics : return
+
+        k = self.kinematics[frame]
+        x = self.kinematic_store.get_iter_first()
+
+        normalize = lambda value : value * 5 + 50
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_11)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_12)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_13)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_21)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_22)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_23)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_31)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_32)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_33)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_a)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_b)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_c)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_gripper)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_11)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_12)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_13)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_21)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_22)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_23)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_31)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_32)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_33)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_a)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_b)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_c)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_gripper)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_11)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_12)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_13)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_21)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_22)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_23)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_31)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_32)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_33)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_a)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_b)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_c)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_gripper)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_11)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_12)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_13)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_21)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_22)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_23)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_31)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_32)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_33)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_a)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_b)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_c)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_x)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_y)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_z)); x = self.kinematic_store.iter_next(x)
+        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_gripper)); x = self.kinematic_store.iter_next(x)
 
 
 def start(config) :
