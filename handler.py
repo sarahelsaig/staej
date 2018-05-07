@@ -136,8 +136,15 @@ class Handler (VideoPlayer):
         if not query or query == 'None' :
             return True
 
-        print (model[iter][0].lower(), query, query in model[iter][0].lower())
-        return query in model[iter][0].lower()
+        #print (model[iter][0].lower(), query, query in model[iter][0].lower())
+        if query in model[iter][0].lower() :
+            return True
+        child = model.iter_children(iter)
+        while child is not None :
+            if self.videoStoreFilter(model, child, user_data) :
+                return True
+            child = model.iter_next(child)
+        return False
 
 
     def getGrs(self, score, dictionary):
