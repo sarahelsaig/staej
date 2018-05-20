@@ -49,7 +49,10 @@ class VideoPlayer(GNotifier) :
 
     @GObject.Property(type=bool, default=False)
     def video_playing(self):
-        return Gst.State.PLAYING in self.pipeline.get_state(10000)
+        for x in self.pipeline.get_state(10000) :
+            if type(x) is Gst.State and x == Gst.State.PLAYING :
+                return True
+        return False
 
     @video_playing.setter
     def video_playing(self, value):
@@ -77,10 +80,13 @@ class VideoPlayer(GNotifier) :
         self.seek(value, Gst.Format.TIME)
 
     def load(self, path):
+        self.pause()
         uri = path if Gst.uri_is_valid(path) else Gst.filename_to_uri(path)
+        self.pipeline.set_state(Gst.State.READY)
         self.playbin.set_property('uri', uri)
         self.play()
         self.pause()
+
 
     def playpause(self, *args):
         self.xid = getXid(self.video_player.get_property('window'))
@@ -107,7 +113,7 @@ class VideoPlayer(GNotifier) :
 
     def onSyncMessage(self, bus, msg):
         if msg.get_structure().get_name() == 'prepare-window-handle':
-            print('prepare-window-handle')
+            # print('prepare-window-handle')
             msg.src.set_window_handle(self.xid)
 
     def onEOS(self, bus, msg):

@@ -4,10 +4,12 @@ from gi.repository import GObject, Gst, Gtk
 import os
 from peewee import fn
 from videoplayer import VideoPlayer
-#from IPython import embed
+from livediagram import LiveDiagram
+from IPython import embed
 
 
 DIR_CONFIG = 'dir_config'
+READY = "Ready"
 
 framesToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 1800, (s // 30) % 60)
 
@@ -17,6 +19,7 @@ class Handler (VideoPlayer):
     __video_name = ""
     __video_length = 0
     __video_search = ""
+    __app_status = ""
 
     def __init__(self, glade_file, dir_config):
         VideoPlayer.__init__(self)
@@ -45,9 +48,14 @@ class Handler (VideoPlayer):
         self.register("video_length", builder.get_object("label_video_length"),
                       set_converter=framesToMinutesStr)
         self.register("video_position", self.scale_video_position)
-        self.register("video_playing", builder.get_object("button_playpause").get_child(),
-                      set_converter=lambda value: '||' if value else '|>')
         self.register("video_search", builder.get_object("entry_video_search"))
+
+        playpause_image = builder.get_object("button_playpause").get_child()
+        self.register("video_playing", lambda value: playpause_image.set_from_icon_name(
+            'media-playback-pause' if value else 'media-playback-start', Gtk.IconSize.BUTTON))
+
+        self.register("app_status", builder.get_object("status").get_children()[0].get_child().get_children()[0])
+        self.app_status = READY
 
         getGestureConverter = lambda n, f = str : lambda value :\
             ([f(x[n]) for x in self.gesture_spans if x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [''])[0]
@@ -61,8 +69,7 @@ class Handler (VideoPlayer):
                       set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
         self.register("video_position", self.updateKinematicStore)
 
-        # remove the menu bar away as we don't really use it yet
-        builder.get_object("main_menubar").destroy()
+        self.live_diagram = LiveDiagram(builder.get_object("live_diagram"))
 
         # set up video store filter
         self.video_store.filter = self.video_store.filter_new()
@@ -124,6 +131,13 @@ class Handler (VideoPlayer):
         self.__video_search = value.lower()
         self.video_store.filter.refilter()
 
+    @GObject.Property(type=str)
+    def app_status(self): return self.__app_status
+
+    @app_status.setter
+    def app_status(self, value):
+        self.__app_status = str(value)
+
     def onExit(self, *args):
         self.pipeline.set_state(Gst.State.NULL)
         Gtk.main_quit(*args)
@@ -134,9 +148,10 @@ class Handler (VideoPlayer):
         name, id, selectable = store[item]
         if not selectable : return
 
+        self.app_status = "Loading..."
         self.video = model.database.Video.get(id = id)
-
         self.updateVideo()
+        self.app_status = READY
 
     def onGestureSelectionChanged(self, tree_selection):
         store, item = tree_selection.get_selected()
@@ -184,7 +199,7 @@ class Handler (VideoPlayer):
             'tasks',
             self.task_name,
             'video',
-            self.video_name + '_capture1.avi')
+            self.video_name + '_capture2.avi')
         self.load(file_name)
 
         # update the Gestures tab
@@ -449,6 +464,10 @@ class Handler (VideoPlayer):
         self.kinematics_range['psm_right_gripper'] = max(
             -min(self.kinematics[x].psm_right_gripper for x in self.kinematics),
             max(self.kinematics[x].psm_right_gripper for x in self.kinematics))
+
+        selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
+        self.live_diagram.data = [[getattr(self.kinematics[x], attr) for x in self.kinematics] for attr in selected]
+        print (self.live_diagram.data)
 
     def updateKinematicStore(self, time):
         frame = time // Gst.FRAME
