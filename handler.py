@@ -554,6 +554,7 @@ class Handler (VideoPlayer):
         self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_z, self.kinematics_range['psm_right_velocity_z'])); x = self.kinematic_store.iter_next(x)
         self.kinematic_store.set_value(x, 1, normalize(k.psm_right_gripper, self.kinematics_range['psm_right_gripper'])); x = self.kinematic_store.iter_next(x)
 
+        self.live_diagram.vline = time / self.video_duration
 
 def start(config) :
     GObject.threads_init()

@@ -44,30 +44,61 @@ class LiveDiagram(gnotifier.GNotifier):
     diagram_type = DiagramType.LINE
     width = 0
     height = 0
-    data = []
+    min = 0
+    max = 100
+    __data = []
+    __vline = None
 
     def __init__(self, drawing_area, diagram_type = DiagramType.LINE):
         self.drawing_area = drawing_area
         self.diagram_type = diagram_type
         drawing_area.connect('draw', self.draw)
 
-    def addSeries(self, series):
-        self.data.append(series)
+    @property
+    def data(self): return self.__data
+
+    @data.setter
+    def data(self, value):
+        self.__data = value
+        self.min = min(0, min(x for series in self.data for x in series))
+        self.max = max(x for series in self.data for x in series)
+        self.drawing_area.queue_draw()
+
+    @property
+    def vline(self): return self.__vline
+
+    @vline.setter
+    def vline(self, value):
+        self.__vline = value
+        self.drawing_area.queue_draw()
+
 
     @restoreContext
     def drawLineGraph(self, ctx, color_index):
-        if len(self.data) == 0 : return
+        if len(self.data) <= color_index or len(self.data[color_index]) == 0 : return
+        data = self.data[color_index]
 
         color_index %= len(COLORS)
         ctx.set_source_rgb(COLORS[color_index][0], COLORS[color_index][1], COLORS[color_index][2])
-        ctx.translate(0, color_index * 3)
+
+        trs = self.height / (self.max - self.min)
+        ofs = self.min * trs
 
         ctx.new_path()
-        ctx.move_to(0, self.data[0])
-        i = 0
-        while i < len(self.data) :
-            ctx.line_to(i * (self.width / len(self.data)), self.data[i])
-            i += 1
+        ctx.move_to(0, self.height - (data[0] * trs - ofs))
+        length = len(data)
+        for i in range(length) :
+            ctx.line_to(i * (self.width / length), self.height - (data[i] * trs - ofs))
+        ctx.stroke()
+
+    @restoreContext
+    def drawLinePerc(self, ctx, x1=0, x2=1, y1=0, y2=1, line_width=1, rgb=(0, 0, 0), is_dash=False) :
+        ctx.set_line_width(line_width)
+        ctx.set_source_rgb(*rgb)
+        if is_dash : ctx.set_dash([4,4], 0)
+        ctx.new_path()
+        ctx.move_to(x1 * self.width, y1 * self.height)
+        ctx.line_to(x2 * self.width, y2 * self.height)
         ctx.stroke()
 
     def draw(self, drawing_area, ctx):
@@ -79,5 +110,19 @@ class LiveDiagram(gnotifier.GNotifier):
         ctx.set_tolerance(0.1)
 
         if self.diagram_type == DiagramType.LINE :
+            print ('MIN', self.min)
+            if self.min == 0 :
+                # line at the bottom
+                self.drawLinePerc(ctx, y1=1, line_width=2)
+            else :
+                # min < 0, line at zero, so drawn at height * (1 - |min| / delta)
+                y0 = 1 + self.min / (self.max - self.min)
+                print (y0)
+                self.drawLinePerc(ctx, y1=y0, y2=y0, line_width=1)
             for i in range(len(self.data)) :
                 self.drawLineGraph(ctx, i)
+
+        if self.vline is not None :
+            if self.vline < 0: self.vline += 1
+            self.drawLinePerc(ctx, x1=self.vline, x2=self.vline, is_dash=True)
+
