@@ -1816,6 +1816,7 @@
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <property name="icon_name">video-x-generic</property>
     <signal name="destroy" handler="onExit" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar">
@@ -1829,7 +1830,11 @@
             <property name="receives_default">True</property>
             <property name="popover">kinematics_selector_popover</property>
             <child>
-              <placeholder/>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-select-color</property>
+              </object>
             </child>
           </object>
         </child>
@@ -2148,58 +2153,102 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkTreeView">
+                      <object class="GtkPaned">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="model">gesture_store</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection">
-                            <signal name="changed" handler="onGestureSelectionChanged" swapped="no"/>
-                          </object>
-                        </child>
+                        <property name="orientation">vertical</property>
+                        <property name="wide_handle">True</property>
                         <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">ID</property>
+                          <object class="GtkTreeView">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="model">gesture_store</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection">
+                                <signal name="changed" handler="onGestureSelectionChanged" swapped="no"/>
+                              </object>
+                            </child>
                             <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
+                              <object class="GtkTreeViewColumn">
+                                <property name="title" translatable="yes">ID</property>
+                                <child>
+                                  <object class="GtkCellRendererText"/>
+                                  <attributes>
+                                    <attribute name="text">0</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn">
+                                <property name="title" translatable="yes">Description</property>
+                                <child>
+                                  <object class="GtkCellRendererText"/>
+                                  <attributes>
+                                    <attribute name="text">1</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn">
+                                <property name="title" translatable="yes">Start</property>
+                                <child>
+                                  <object class="GtkCellRendererText"/>
+                                  <attributes>
+                                    <attribute name="text">2</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn">
+                                <property name="title" translatable="yes">End</property>
+                                <child>
+                                  <object class="GtkCellRendererText"/>
+                                  <attributes>
+                                    <attribute name="text">3</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
                             </child>
                           </object>
+                          <packing>
+                            <property name="resize">True</property>
+                            <property name="shrink">True</property>
+                          </packing>
                         </child>
                         <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">Description</property>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">1</attribute>
-                              </attributes>
+                              <object class="GtkDrawingArea">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkDrawingArea">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">Start</property>
-                            <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">2</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">End</property>
-                            <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">3</attribute>
-                              </attributes>
-                            </child>
-                          </object>
+                          <packing>
+                            <property name="resize">True</property>
+                            <property name="shrink">True</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
@@ -2236,14 +2285,14 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkDrawingArea" id="video_player">
-                        <property name="width_request">300</property>
-                        <property name="height_request">200</property>
+                        <property name="width_request">320</property>
+                        <property name="height_request">240</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -2380,53 +2429,64 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkDrawingArea" id="live_diagram">
-                        <property name="name">kinematics_diagram</property>
-                        <property name="height_request">100</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkScrolledWindow">
+                      <object class="GtkPaned">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="shadow_type">in</property>
+                        <property name="orientation">vertical</property>
+                        <property name="wide_handle">True</property>
                         <child>
-                          <object class="GtkTreeView" id="treeview_kinematic">
+                          <object class="GtkDrawingArea" id="live_diagram">
+                            <property name="name">kinematics_diagram</property>
+                            <property name="height_request">100</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="resize">False</property>
+                            <property name="shrink">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="model">kinematic_store</property>
-                            <property name="search_column">0</property>
-                            <property name="enable_grid_lines">both</property>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection"/>
-                            </child>
+                            <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkTreeViewColumn">
-                                <property name="resizable">True</property>
-                                <property name="title" translatable="yes">Value</property>
+                              <object class="GtkTreeView" id="treeview_kinematic">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="model">kinematic_store</property>
+                                <property name="search_column">0</property>
+                                <property name="enable_grid_lines">both</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection"/>
+                                </child>
                                 <child>
-                                  <object class="GtkCellRendererProgress" id="kinematic_cellrenderer"/>
-                                  <attributes>
-                                    <attribute name="text">0</attribute>
-                                    <attribute name="value">1</attribute>
-                                  </attributes>
+                                  <object class="GtkTreeViewColumn">
+                                    <property name="resizable">True</property>
+                                    <property name="title" translatable="yes">Value</property>
+                                    <child>
+                                      <object class="GtkCellRendererProgress" id="kinematic_cellrenderer"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                        <attribute name="value">1</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
                                 </child>
                               </object>
                             </child>
                           </object>
+                          <packing>
+                            <property name="resize">True</property>
+                            <property name="shrink">True</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">4</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                   </object>

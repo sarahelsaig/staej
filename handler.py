@@ -111,6 +111,8 @@ class Handler (VideoPlayer):
         # set up video player
         self.main_window.show_all()
 
+        self.main_window.maximize()
+
 
     @GObject.Property(type=str)
     def task_name(self): return self.__task_name
