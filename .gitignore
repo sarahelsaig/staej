@@ -109,3 +109,5 @@ ENV/
 # project
 /db.zip
 /__init__.py
+
+\#gui\.glade#

@@ -1,6 +1,8 @@
 from gi.repository import GObject, Gtk
 
 
+Gtk.Widget.get_id = lambda x: Gtk.Buildable.get_name(x)
+
 class GNotifier(GObject.Object) :
     """
     Base class for GObject based ViewModel.

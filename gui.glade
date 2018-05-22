@@ -328,6 +328,1482 @@
       </row>
     </data>
   </object>
+  <object class="GtkPopoverMenu" id="kinematics_selector_popover">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="width_request">200</property>
+        <property name="height_request">300</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkViewport">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox" id="ksp_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_pos_x">
+                    <property name="label" translatable="yes">mtm_left_pos_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_pos_y">
+                    <property name="label" translatable="yes">mtm_left_pos_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_pos_z">
+                    <property name="label" translatable="yes">mtm_left_pos_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_11">
+                    <property name="label" translatable="yes">mtm_left_rot_11</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_12">
+                    <property name="label" translatable="yes">mtm_left_rot_12</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_13">
+                    <property name="label" translatable="yes">mtm_left_rot_13</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_21">
+                    <property name="label" translatable="yes">mtm_left_rot_21</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_22">
+                    <property name="label" translatable="yes">mtm_left_rot_22</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_23">
+                    <property name="label" translatable="yes">mtm_left_rot_23</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_31">
+                    <property name="label" translatable="yes">mtm_left_rot_31</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_32">
+                    <property name="label" translatable="yes">mtm_left_rot_32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_rot_33">
+                    <property name="label" translatable="yes">mtm_left_rot_33</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_a">
+                    <property name="label" translatable="yes">mtm_left_velocity_a</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">12</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_b">
+                    <property name="label" translatable="yes">mtm_left_velocity_b</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">13</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_c">
+                    <property name="label" translatable="yes">mtm_left_velocity_c</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">14</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_x">
+                    <property name="label" translatable="yes">mtm_left_velocity_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">15</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_y">
+                    <property name="label" translatable="yes">mtm_left_velocity_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">16</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_velocity_z">
+                    <property name="label" translatable="yes">mtm_left_velocity_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">17</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_left_gripper">
+                    <property name="label" translatable="yes">mtm_left_gripper</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">18</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_pos_x">
+                    <property name="label" translatable="yes">mtm_right_pos_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">19</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_pos_y">
+                    <property name="label" translatable="yes">mtm_right_pos_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">20</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_pos_z">
+                    <property name="label" translatable="yes">mtm_right_pos_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">21</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_11">
+                    <property name="label" translatable="yes">mtm_right_rot_11</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">22</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_12">
+                    <property name="label" translatable="yes">mtm_right_rot_12</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">23</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_13">
+                    <property name="label" translatable="yes">mtm_right_rot_13</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">24</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_21">
+                    <property name="label" translatable="yes">mtm_right_rot_21</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">25</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_22">
+                    <property name="label" translatable="yes">mtm_right_rot_22</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">26</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_23">
+                    <property name="label" translatable="yes">mtm_right_rot_23</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">27</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_31">
+                    <property name="label" translatable="yes">mtm_right_rot_31</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">28</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_32">
+                    <property name="label" translatable="yes">mtm_right_rot_32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">29</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_rot_33">
+                    <property name="label" translatable="yes">mtm_right_rot_33</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">30</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_a">
+                    <property name="label" translatable="yes">mtm_right_velocity_a</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">31</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_b">
+                    <property name="label" translatable="yes">mtm_right_velocity_b</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">32</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_c">
+                    <property name="label" translatable="yes">mtm_right_velocity_c</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">33</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_x">
+                    <property name="label" translatable="yes">mtm_right_velocity_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">34</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_y">
+                    <property name="label" translatable="yes">mtm_right_velocity_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">35</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_velocity_z">
+                    <property name="label" translatable="yes">mtm_right_velocity_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">36</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_mtm_right_gripper">
+                    <property name="label" translatable="yes">mtm_right_gripper</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">37</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_pos_x">
+                    <property name="label" translatable="yes">psm_left_pos_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">38</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_pos_y">
+                    <property name="label" translatable="yes">psm_left_pos_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">39</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_pos_z">
+                    <property name="label" translatable="yes">psm_left_pos_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">40</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_11">
+                    <property name="label" translatable="yes">psm_left_rot_11</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">41</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_12">
+                    <property name="label" translatable="yes">psm_left_rot_12</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">42</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_13">
+                    <property name="label" translatable="yes">psm_left_rot_13</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">43</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_21">
+                    <property name="label" translatable="yes">psm_left_rot_21</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">44</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_22">
+                    <property name="label" translatable="yes">psm_left_rot_22</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">45</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_23">
+                    <property name="label" translatable="yes">psm_left_rot_23</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">46</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_31">
+                    <property name="label" translatable="yes">psm_left_rot_31</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">47</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_32">
+                    <property name="label" translatable="yes">psm_left_rot_32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">48</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_rot_33">
+                    <property name="label" translatable="yes">psm_left_rot_33</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">49</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_a">
+                    <property name="label" translatable="yes">psm_left_velocity_a</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">50</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_b">
+                    <property name="label" translatable="yes">psm_left_velocity_b</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">51</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_c">
+                    <property name="label" translatable="yes">psm_left_velocity_c</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">52</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_x">
+                    <property name="label" translatable="yes">psm_left_velocity_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">53</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_y">
+                    <property name="label" translatable="yes">psm_left_velocity_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">54</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_velocity_z">
+                    <property name="label" translatable="yes">psm_left_velocity_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">55</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_left_gripper">
+                    <property name="label" translatable="yes">psm_left_gripper</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">56</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_pos_x">
+                    <property name="label" translatable="yes">psm_right_pos_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">57</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_pos_y">
+                    <property name="label" translatable="yes">psm_right_pos_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">58</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_pos_z">
+                    <property name="label" translatable="yes">psm_right_pos_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">59</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_11">
+                    <property name="label" translatable="yes">psm_right_rot_11</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">60</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_12">
+                    <property name="label" translatable="yes">psm_right_rot_12</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">61</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_13">
+                    <property name="label" translatable="yes">psm_right_rot_13</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">62</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_21">
+                    <property name="label" translatable="yes">psm_right_rot_21</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">63</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_22">
+                    <property name="label" translatable="yes">psm_right_rot_22</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">64</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_23">
+                    <property name="label" translatable="yes">psm_right_rot_23</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">65</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_31">
+                    <property name="label" translatable="yes">psm_right_rot_31</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">66</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_32">
+                    <property name="label" translatable="yes">psm_right_rot_32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">67</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_rot_33">
+                    <property name="label" translatable="yes">psm_right_rot_33</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">68</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_a">
+                    <property name="label" translatable="yes">psm_right_velocity_a</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">69</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_b">
+                    <property name="label" translatable="yes">psm_right_velocity_b</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">70</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_c">
+                    <property name="label" translatable="yes">psm_right_velocity_c</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">71</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_x">
+                    <property name="label" translatable="yes">psm_right_velocity_x</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">72</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_y">
+                    <property name="label" translatable="yes">psm_right_velocity_y</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">73</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_velocity_z">
+                    <property name="label" translatable="yes">psm_right_velocity_z</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">74</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="ksp_psm_right_gripper">
+                    <property name="label" translatable="yes">psm_right_gripper</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="onKspToggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">75</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="submenu">main</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkTreeStore" id="video_store">
     <columns>
       <!-- column-name Name -->
@@ -347,10 +1823,15 @@
         <property name="can_focus">False</property>
         <property name="show_close_button">True</property>
         <child>
-          <placeholder/>
-        </child>
-        <child type="title">
-          <placeholder/>
+          <object class="GtkMenuButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="popover">kinematics_selector_popover</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
         </child>
       </object>
     </child>

@@ -5,7 +5,12 @@ import os
 from peewee import fn
 from videoplayer import VideoPlayer
 from livediagram import LiveDiagram
-from IPython import embed
+
+def debug(vars) :
+    from IPython import embed
+    for x in vars :
+        locals()[x] = vars[x]
+    embed()
 
 
 DIR_CONFIG = 'dir_config'
@@ -20,6 +25,8 @@ class Handler (VideoPlayer):
     __video_length = 0
     __video_search = ""
     __app_status = ""
+
+    selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
 
     def __init__(self, glade_file, dir_config):
         VideoPlayer.__init__(self)
@@ -41,6 +48,8 @@ class Handler (VideoPlayer):
         self.scale_video_position = builder.get_object("scale_video_position")
         self.video_player = builder.get_object("video_player")
         self.label_subject = builder.get_object("label_subject")
+
+        self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
         # gui binding
         self.register("task_name", builder.get_object("label_task_name"))
@@ -161,6 +170,10 @@ class Handler (VideoPlayer):
         if not (start <= self.video_position / Gst.FRAME <= end) :
             self.video_position = start * Gst.FRAME
 
+    def onKspToggled(self, check_button, *args):
+        self.selected = [ x.get_id()[4:] for x in self.ksp_checkbuttons if x.get_active() ]
+        self.updateLiveDiagramData()
+
     def videoStoreFilter(self, model, iter, user_data):
         query = self.video_search
         if not query or query == 'None' :
@@ -232,31 +245,31 @@ class Handler (VideoPlayer):
         self.kinematics_range['mtm_left_pos_x'] = max(
             -min(self.kinematics[x].mtm_left_pos_x for x in self.kinematics),
             max(self.kinematics[x].mtm_left_pos_x for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_pos_y'] = max(
             -min(self.kinematics[x].mtm_left_pos_y for x in self.kinematics),
             max(self.kinematics[x].mtm_left_pos_y for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_pos_z'] = max(
             -min(self.kinematics[x].mtm_left_pos_z for x in self.kinematics),
             max(self.kinematics[x].mtm_left_pos_z for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_rot_11'] = max(
             -min(self.kinematics[x].mtm_left_rot_11 for x in self.kinematics),
             max(self.kinematics[x].mtm_left_rot_11 for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_rot_12'] = max(
             -min(self.kinematics[x].mtm_left_rot_12 for x in self.kinematics),
             max(self.kinematics[x].mtm_left_rot_12 for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_rot_13'] = max(
             -min(self.kinematics[x].mtm_left_rot_13 for x in self.kinematics),
             max(self.kinematics[x].mtm_left_rot_13 for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_rot_21'] = max(
             -min(self.kinematics[x].mtm_left_rot_21 for x in self.kinematics),
             max(self.kinematics[x].mtm_left_rot_21 for x in self.kinematics))
-        print(1)
+        #print(1)
         self.kinematics_range['mtm_left_rot_22'] = max(
             -min(self.kinematics[x].mtm_left_rot_22 for x in self.kinematics),
             max(self.kinematics[x].mtm_left_rot_22 for x in self.kinematics))
@@ -465,9 +478,11 @@ class Handler (VideoPlayer):
             -min(self.kinematics[x].psm_right_gripper for x in self.kinematics),
             max(self.kinematics[x].psm_right_gripper for x in self.kinematics))
 
-        selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
-        self.live_diagram.data = [[getattr(self.kinematics[x], attr) for x in self.kinematics] for attr in selected]
-        print (self.live_diagram.data)
+        self.updateLiveDiagramData()
+
+
+    def updateLiveDiagramData(self):
+        self.live_diagram.data = [[getattr(self.kinematics[x], attr) for x in self.kinematics] for attr in self.selected]
 
     def updateKinematicStore(self, time):
         frame = time // Gst.FRAME

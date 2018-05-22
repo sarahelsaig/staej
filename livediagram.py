@@ -60,8 +60,12 @@ class LiveDiagram(gnotifier.GNotifier):
     @data.setter
     def data(self, value):
         self.__data = value
-        self.min = min(0, min(x for series in self.data for x in series))
-        self.max = max(x for series in self.data for x in series)
+        if value is None or len(value) == 0  : return
+        items = [ x for series in self.data for x in series ]
+        if len(items) == 0: return
+
+        self.min = min(0, *items)
+        self.max = max(items)
         self.drawing_area.queue_draw()
 
     @property
@@ -110,14 +114,12 @@ class LiveDiagram(gnotifier.GNotifier):
         ctx.set_tolerance(0.1)
 
         if self.diagram_type == DiagramType.LINE :
-            print ('MIN', self.min)
             if self.min == 0 :
                 # line at the bottom
                 self.drawLinePerc(ctx, y1=1, line_width=2)
             else :
                 # min < 0, line at zero, so drawn at height * (1 - |min| / delta)
                 y0 = 1 + self.min / (self.max - self.min)
-                print (y0)
                 self.drawLinePerc(ctx, y1=y0, y2=y0, line_width=1)
             for i in range(len(self.data)) :
                 self.drawLineGraph(ctx, i)
