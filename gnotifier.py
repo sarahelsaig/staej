@@ -53,6 +53,8 @@ class GNotifier(GObject.Object) :
                 else :
                     widget_handler = lambda range, *args : self.set_property(name, get_converter(range.get_value()))
                 widget.connect('change-value', widget_handler)
+            elif isinstance(widget, Gtk.Window):
+                update = lambda value : widget.set_title(value)
             else :
                 for t in self.widget_types : # look up additional handlers, signal_handler is (sender, gtypespec) => value
                     if (isinstance(widget, t)) :

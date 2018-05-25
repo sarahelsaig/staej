@@ -52,6 +52,7 @@ class Handler (VideoPlayer):
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
         # gui binding
+        self.register("video_name", self.main_window, set_converter=lambda x: '{} - staej'.format(x) if x else 'staej')
         self.register("task_name", builder.get_object("label_task_name"))
         self.register("video_name", builder.get_object("label_video_name"))
         self.register("video_length", builder.get_object("label_video_length"),
@@ -108,10 +109,10 @@ class Handler (VideoPlayer):
         # kinematics
         self.kinematics = dict()
 
-        # set up video player
+        # finalization
         self.main_window.show_all()
-
         self.main_window.maximize()
+        self.main_window.set_title('staej')
 
 
     @GObject.Property(type=str)
