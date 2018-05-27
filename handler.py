@@ -5,6 +5,8 @@ import os
 from peewee import fn
 from videoplayer import VideoPlayer
 from livediagram import LiveDiagram
+import matplotlib
+from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
 
 def debug(vars) :
     from IPython import embed
@@ -48,6 +50,8 @@ class Handler (VideoPlayer):
         self.scale_video_position = builder.get_object("scale_video_position")
         self.video_player = builder.get_object("video_player")
         self.label_subject = builder.get_object("label_subject")
+        self.gesture_diagram_box = builder.get_object("gesture_diagram_box")
+        self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -67,8 +71,10 @@ class Handler (VideoPlayer):
         self.register("app_status", builder.get_object("status").get_children()[0].get_child().get_children()[0])
         self.app_status = READY
 
-        getGestureConverter = lambda n, f = str : lambda value :\
-            ([f(x[n]) for x in self.gesture_spans if x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [''])[0]
+        getGestureConverter = lambda n, f = str, d = '' : lambda value :\
+            ([f(x[n] if n else i) for i, x in enumerate(self.gesture_spans) if x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [d])[0]
+        self.getGestureIndex = getGestureConverter(None, int, 0)
+
         self.register("video_position", builder.get_object("current_gesture_name"),
                       set_converter=getGestureConverter(GESTURE_NAME))
         self.register("video_position", builder.get_object("current_gesture_start"),
@@ -77,9 +83,13 @@ class Handler (VideoPlayer):
                       set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
         self.register("video_position", builder.get_object("current_gesture_end"),
                       set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
-        self.register("video_position", self.updateKinematicStore)
+        self.register("video_position", self.updateTime)
 
+        # gui additional
         self.live_diagram = LiveDiagram(builder.get_object("live_diagram"))
+        self.gesture_plot = TrajectoryPlot().pack_into(self.gesture_diagram_box)
+        self.main_window.show_all()
+
 
         # set up video store filter
         self.video_store.filter = self.video_store.filter_new()
@@ -165,7 +175,10 @@ class Handler (VideoPlayer):
         self.updateVideo()
         self.app_status = READY
 
+    suppress_on_gesture_selection_changed = False
     def onGestureSelectionChanged(self, tree_selection):
+        if self.suppress_on_gesture_selection_changed : return
+        #print('onGestureSelectionChanged')
         store, item = tree_selection.get_selected()
         if not store or not item : return
 
@@ -175,7 +188,7 @@ class Handler (VideoPlayer):
 
     def onKspToggled(self, check_button, *args):
         self.selected = [ x.get_id()[4:] for x in self.ksp_checkbuttons if x.get_active() ]
-        self.updateLiveDiagramData()
+        self.updateDiagramData()
 
     def videoStoreFilter(self, model, iter, user_data):
         query = self.video_search
@@ -481,13 +494,26 @@ class Handler (VideoPlayer):
             -min(self.kinematics[x].psm_right_gripper for x in self.kinematics),
             max(self.kinematics[x].psm_right_gripper for x in self.kinematics))
 
-        self.updateLiveDiagramData()
+        self.updateDiagramData()
 
 
-    def updateLiveDiagramData(self):
+        self.gesture_plot.clear()
+        tp = self.gesture_plot.addSubplots(
+            'MTM Left Position',
+            [self.kinematics[x].mtm_left_pos_x for x in self.kinematics],
+            [self.kinematics[x].mtm_left_pos_y for x in self.kinematics],
+            [self.kinematics[x].mtm_left_pos_z for x in self.kinematics],
+            'MTM Right Position',
+            [self.kinematics[x].mtm_right_pos_x for x in self.kinematics],
+            [self.kinematics[x].mtm_right_pos_y for x in self.kinematics],
+            [self.kinematics[x].mtm_right_pos_z for x in self.kinematics],
+        )
+
+
+    def updateDiagramData(self):
         self.live_diagram.data = [[getattr(self.kinematics[x], attr) for x in self.kinematics] for attr in self.selected]
 
-    def updateKinematicStore(self, time):
+    def updateTime(self, time):
         frame = time // Gst.FRAME
         if frame not in self.kinematics : return
 
@@ -573,8 +599,23 @@ class Handler (VideoPlayer):
         self.kinematic_store.set_value(x, 1, normalize(k.psm_right_gripper, self.kinematics_range['psm_right_gripper'])); x = self.kinematic_store.iter_next(x)
 
         self.live_diagram.vline = time / self.video_duration
+        self.gesture_plot.highlight_point = frame - 1 # index of the current frame's item in the series
+
+        gesture_index = self.getGestureIndex(time)
+        self.gesture_plot.highlight_section = (
+            self.gesture_spans[gesture_index][GESTURE_START],
+            self.gesture_spans[gesture_index][GESTURE_END])
+        self.suppress_on_gesture_selection_changed = True
+        self.gesture_playlist_selection.select_iter(self.gesture_store.iter_nth_child(None, gesture_index))
+        self.suppress_on_gesture_selection_changed = False
 
 def start(config) :
+    font = {'family': 'DejaVu Sans',
+            'weight': 'normal',
+            'size': 8}
+
+    matplotlib.rc('font', **font)
+
     GObject.threads_init()
     Gst.init(None)
 
