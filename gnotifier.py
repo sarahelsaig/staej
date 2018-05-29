@@ -19,7 +19,6 @@ class GNotifier(GObject.Object) :
                 value = int(value)
             elif type_name == 'gdouble':
                 value = float(value)
-            #else: type_name == 'gchararray':
         else :
             name = gtypespec
 
