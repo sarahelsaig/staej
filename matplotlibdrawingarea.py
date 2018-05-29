@@ -51,13 +51,14 @@ class TimeLinearPlot(MatplotlibDrawingArea):
 class TrajectoryPlot(MatplotlibDrawingArea):
     __highlight_section = (0,0)
 
-    def __init__(self, *values):
+    def __init__(self, *values, is_synchronised=True):
         self.figure = Figure()
         self.axes = list()
         self.lines = dict()
         self.__data = dict()
         self.__highlight_points = dict()
         self.__highlight_sections = dict()
+        self.is_synchronised = is_synchronised
 
         self.addSubplots(*values)
         MatplotlibDrawingArea.__init__(self, self.figure)
@@ -65,6 +66,7 @@ class TrajectoryPlot(MatplotlibDrawingArea):
             Axes3D.mouse_init(subplot)
 
         self.connect('notify::highlight-point', self.updateHighlightPoint)
+        self.figure.canvas.mpl_connect('motion_notify_event', self.onMove)
 
     @property
     def highlight_section(self):
@@ -134,5 +136,17 @@ class TrajectoryPlot(MatplotlibDrawingArea):
         from IPython import embed
         #if self.do_embed: embed()
         #for x in self.__highlight_points: x.remove()
+
+    def onMove(self, event):
+        if not self.is_synchronised: return
+
+        source = event.inaxes
+        if source not in self.axes: return
+
+        for subplot in self.axes:
+            if subplot != source :
+               subplot.view_init(elev=source.elev, azim=source.azim)
+
+        self.figure.canvas.draw_idle()
 
 

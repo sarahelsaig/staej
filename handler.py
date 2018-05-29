@@ -1,10 +1,11 @@
+import re
 import model
 import model.database
 from gi.repository import GObject, Gst, Gtk
 import os
 from peewee import fn
 from videoplayer import VideoPlayer
-from livediagram import LiveDiagram
+import livediagram
 import matplotlib
 from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
 
@@ -52,6 +53,8 @@ class Handler (VideoPlayer):
         self.label_subject = builder.get_object("label_subject")
         self.gesture_diagram_box = builder.get_object("gesture_diagram_box")
         self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
+        self.export_dialog = builder.get_object("export_dialog")
+        self.export_query = builder.get_object("export_query")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -86,7 +89,7 @@ class Handler (VideoPlayer):
         self.register("video_position", self.updateTime)
 
         # gui additional
-        self.live_diagram = LiveDiagram(builder.get_object("live_diagram"))
+        self.live_diagram = livediagram.LiveDiagram(builder.get_object("live_diagram"))
         self.gesture_plot = TrajectoryPlot().pack_into(self.gesture_diagram_box)
         self.main_window.show_all()
 
@@ -123,6 +126,7 @@ class Handler (VideoPlayer):
         self.main_window.show_all()
         self.main_window.maximize()
         self.main_window.set_title('staej')
+        self.onKspToggled(checkbox_only=True)
 
 
     @GObject.Property(type=str)
@@ -186,9 +190,19 @@ class Handler (VideoPlayer):
         if not (start <= self.video_position / Gst.FRAME <= end) :
             self.video_position = start * Gst.FRAME
 
-    def onKspToggled(self, check_button, *args):
-        self.selected = [ x.get_id()[4:] for x in self.ksp_checkbuttons if x.get_active() ]
-        self.updateDiagramData()
+    def onKspToggled(self, *dontcare, checkbox_only=False):
+        selected_checkboxes = [ x for x in self.ksp_checkbuttons if x.get_active() ]
+        self.selected = map(lambda x: x.get_id()[4:], selected_checkboxes)
+        if not checkbox_only: self.updateDiagramData()
+
+        for x in self.ksp_checkbuttons: x.get_child().set_text(x.get_id()[4:])
+        for checkbox, color in zip(selected_checkboxes, livediagram.getColors(len(selected_checkboxes))):
+            label = checkbox.get_child()
+            color = "{:02X}{:02X}{:02X}".format(*[int(x * 255) for x in color])
+            label.set_markup('<span color="#{}">{}</span>'.format(color, label.get_text()))
+
+    def onExportClicked(self, export_button):
+        debug(locals())
 
     def videoStoreFilter(self, model, iter, user_data):
         query = self.video_search
@@ -494,9 +508,6 @@ class Handler (VideoPlayer):
             -min(self.kinematics[x].psm_right_gripper for x in self.kinematics),
             max(self.kinematics[x].psm_right_gripper for x in self.kinematics))
 
-        self.updateDiagramData()
-
-
         self.gesture_plot.clear()
         tp = self.gesture_plot.addSubplots(
             'MTM Left Position',
@@ -508,6 +519,8 @@ class Handler (VideoPlayer):
             [self.kinematics[x].mtm_right_pos_y for x in self.kinematics],
             [self.kinematics[x].mtm_right_pos_z for x in self.kinematics],
         )
+
+        self.onKspToggled()
 
 
     def updateDiagramData(self):
@@ -609,6 +622,19 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection.select_iter(self.gesture_store.iter_nth_child(None, gesture_index))
         self.suppress_on_gesture_selection_changed = False
 
+    def onExportClicked(self, *dontcare):
+        self.export_dialog.run()
+
+    def onExportDialogCancel(self, *dontcare): self.export_dialog.close()
+
+    def onExportDialogSave(self, *dontcare):
+        import scipy.io
+        query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
+        arr = list(db.execute_sql(query))
+        print (arr)
+        scipy.io.savemat('file.mat', {'result':arr})
+        self.export_dialog.close()
+
 def start(config) :
     font = {'family': 'DejaVu Sans',
             'weight': 'normal',
@@ -619,7 +645,8 @@ def start(config) :
     GObject.threads_init()
     Gst.init(None)
 
-    model.database.connectFileDb(config)
+    global db
+    db = model.database.connectFileDb(config)
 
     handler = Handler("gui.glade", config[DIR_CONFIG])
     return Gtk.main()

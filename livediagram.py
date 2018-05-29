@@ -28,6 +28,14 @@ COLORS = [
     [0.6196, 0.6196, 0.6196],
     [0.3765, 0.4902, 0.5451],
     ]
+COLORS_COUNT = len(COLORS)
+COLORS_ORDER = [x + i for i in range(3) for x in [0,6,12,3,9,15]] + [18] # custom order for ore scattered colors
+
+def getColors(amount = None, single = False):
+    if amount is None : return COLORS
+    amount %= COLORS_COUNT
+    if single : return COLORS[COLORS_ORDER[amount]]
+    return [COLORS[i] for i in COLORS_ORDER[:amount]]
 
 def restoreContext(f) :
     def wrapper (self, ctx, *args, **kwargs) :
@@ -82,8 +90,8 @@ class LiveDiagram(gnotifier.GNotifier):
         if len(self.data) <= color_index or len(self.data[color_index]) == 0 : return
         data = self.data[color_index]
 
-        color_index %= len(COLORS)
-        ctx.set_source_rgb(COLORS[color_index][0], COLORS[color_index][1], COLORS[color_index][2])
+        color = getColors(color_index, single=True)
+        ctx.set_source_rgb(*color)
 
         trs = self.height / (self.max - self.min)
         ofs = self.min * trs

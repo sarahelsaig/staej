@@ -88,16 +88,16 @@ class VideoPlayer(GNotifier) :
         self.pause()
 
 
-    def playpause(self, *args):
+    def playpause(self, *dontcare):
         self.xid = getXid(self.video_player.get_property('window'))
 
         self.video_playing = not self.video_playing
 
-    def play(self, *args):
+    def play(self, *dontcare):
         self.xid = getXid(self.video_player.get_property('window'))
         self.video_playing = True
 
-    def pause(self, *args):
+    def pause(self, *dontcare):
         self.xid = getXid(self.video_player.get_property('window'))
         self.video_playing = False
 
