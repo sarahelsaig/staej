@@ -24,7 +24,10 @@ framesToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 1800, (s // 30) % 60
 
 GESTURE_ID, GESTURE_NAME, GESTURE_START, GESTURE_END = range(4)
 
-EXPORT_TARGET_ALL = 'all'
+EXPORT_TARGET_EVERYTHING = 'everything'
+EXPORT_TARGET_VIDEO = 'video'
+EXPORT_TARGET_GESTURES = 'gestures'
+EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
 
 class Handler (VideoPlayer):
     __task_name = ""
@@ -33,6 +36,7 @@ class Handler (VideoPlayer):
     __video_search = ""
     __app_status = ""
 
+    video = None
     selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
 
     def __init__(self, glade_file, dir_config):
@@ -59,6 +63,7 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
         self.export_dialog = builder.get_object("export_dialog")
         self.export_query = builder.get_object("export_query")
+        self.treeview_video = builder.get_object("treeview_video")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -100,7 +105,7 @@ class Handler (VideoPlayer):
 
         # set up video store filter
         self.video_store.filter = self.video_store.filter_new()
-        builder.get_object("treeview_video").set_model(self.video_store.filter)
+        self.treeview_video.set_model(self.video_store.filter)
         self.video_store.filter.set_visible_func(self.videoStoreFilter)
 
         # get task list
@@ -179,9 +184,9 @@ class Handler (VideoPlayer):
         Gtk.main_quit(*args)
 
     def onVideoSelectionChanged(self, tree_selection):
-        store, item = tree_selection.get_selected()
-        if not store or not item : return
-        name, id, selectable = store[item]
+        store, iter = tree_selection.get_selected()
+        if not store or not iter : return
+        name, id, selectable = store[iter]
         if not selectable : return
 
         self.app_status = "Loading..."
@@ -193,10 +198,10 @@ class Handler (VideoPlayer):
     def onGestureSelectionChanged(self, tree_selection):
         if self.suppress_on_gesture_selection_changed : return
         #print('onGestureSelectionChanged')
-        store, item = tree_selection.get_selected()
-        if not store or not item : return
+        store, iter = tree_selection.get_selected()
+        if not store or not iter : return
 
-        id, desc, start, end = store[item]
+        id, desc, start, end = store[iter]
         if not (start <= self.video_position / Gst.FRAME <= end) :
             self.video_position = start * Gst.FRAME
 
@@ -331,15 +336,16 @@ class Handler (VideoPlayer):
         self.suppress_on_gesture_selection_changed = False
 
     def onExportClicked(self, *dontcare):
-        self.export_target = EXPORT_TARGET_ALL
+        self.export_target = EXPORT_TARGET_EVERYTHING
         self.export_dialog.show()
 
     def onExportDialogCancel(self, *dontcare):
         'Clean out the SQL entry, reset the checkboxes and hide the dialog.'
 
+        self.builder.get_object('export_magnitude_everything').set_active(True)
         self.export_query.set_text('')
-        for colname in model.kinematics.columns :
-            map(lambda x: self.builder.get_object('export_' + colname), model.kinematics.columns).set_active(True)
+        for colname in model.kinematics.meta + model.kinematics.columns :
+            self.builder.get_object('export_' + colname).set_active(False)
 
         self.export_dialog.hide()
         return True
@@ -350,13 +356,37 @@ class Handler (VideoPlayer):
             query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
         else :
             checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns)
-            active = [x for x in checkbuttons if x.get_active()] or checkbuttons
-            selected_columns = ', '.join(x.get_label() for x in active if x.get_active())
-            query = 'SELECT id, video_id, frame, {} from Kinematic'.format(selected_columns)
+            active = [x for x in checkbuttons if x.get_active()]
+            selected_columns = ', '.join(x.get_label() for x in active if x.get_active()) or '*'
+
+            if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
+                conditions = '1=1'
+            elif self.export_magnitude == EXPORT_TARGET_VIDEO :
+                if not self.video : return
+                conditions = 'video_id = {}'.format(self.video.id)
+
+
+
+        query = 'SELECT {} from Kinematic where {}'.format(selected_columns, conditions)
+        print(query)
+
+        dialog = Gtk.FileChooserDialog("Save Export",
+                                       self.main_window,
+                                       Gtk.FileChooserAction.SAVE,
+                                       ("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.ACCEPT))
+        result = dialog.run()
+        if result != Gtk.ResponseType.ACCEPT : return
+        filename = dialog.get_filename()
+        dialog.destroy()
+
         arr = list(db.execute_sql(query))
-        print (arr)
-        scipy.io.savemat('file.mat', {'result':arr})
+        #print(arr)
+        scipy.io.savemat(filename, {'result':arr})
         self.onExportDialogCancel()
+
+    def onExportMagnitudeChanged(self, radio):
+        if radio.get_active() :
+            self.export_magnitude = radio.get_name()
 
 def start(config) :
     font = {'family': 'DejaVu Sans',
