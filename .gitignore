@@ -111,3 +111,5 @@ ENV/
 /__init__.py
 
 \#gui\.glade#
+
+file\.mat

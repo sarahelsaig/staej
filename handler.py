@@ -1,6 +1,7 @@
 import re
 import model
 import model.database
+import model.kinematics
 from gi.repository import GObject, Gst, Gtk
 import os
 from peewee import fn
@@ -22,6 +23,9 @@ READY = "Ready"
 framesToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 1800, (s // 30) % 60)
 
 GESTURE_ID, GESTURE_NAME, GESTURE_START, GESTURE_END = range(4)
+
+EXPORT_TARGET_ALL = 'all'
+
 class Handler (VideoPlayer):
     __task_name = ""
     __video_name = ""
@@ -128,6 +132,12 @@ class Handler (VideoPlayer):
         self.main_window.set_title('staej')
         self.onKspToggled(checkbox_only=True)
 
+        # init export dialog
+        self.export_dialog.set_transient_for(self.main_window)
+        self.export_dialog.set_modal(self.main_window)
+        #self.export_dialog.run()
+        #self.export_dialog.hide()
+
 
     @GObject.Property(type=str)
     def task_name(self): return self.__task_name
@@ -201,9 +211,6 @@ class Handler (VideoPlayer):
             color = "{:02X}{:02X}{:02X}".format(*[int(x * 255) for x in color])
             label.set_markup('<span color="#{}">{}</span>'.format(color, label.get_text()))
 
-    def onExportClicked(self, export_button):
-        debug(locals())
-
     def videoStoreFilter(self, model, iter, user_data):
         query = self.video_search
         if not query or query == 'None' :
@@ -272,241 +279,14 @@ class Handler (VideoPlayer):
         self.kinematics_range = dict()
         for x in model.database.Kinematic.select().where(model.database.Kinematic.video_id == self.video.id).order_by(model.database.Kinematic.frame) :
             self.kinematics[x.frame] = x
-        self.kinematics_range['mtm_left_pos_x'] = max(
-            -min(self.kinematics[x].mtm_left_pos_x for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_pos_x for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_pos_y'] = max(
-            -min(self.kinematics[x].mtm_left_pos_y for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_pos_y for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_pos_z'] = max(
-            -min(self.kinematics[x].mtm_left_pos_z for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_pos_z for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_rot_11'] = max(
-            -min(self.kinematics[x].mtm_left_rot_11 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_11 for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_rot_12'] = max(
-            -min(self.kinematics[x].mtm_left_rot_12 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_12 for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_rot_13'] = max(
-            -min(self.kinematics[x].mtm_left_rot_13 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_13 for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_rot_21'] = max(
-            -min(self.kinematics[x].mtm_left_rot_21 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_21 for x in self.kinematics))
-        #print(1)
-        self.kinematics_range['mtm_left_rot_22'] = max(
-            -min(self.kinematics[x].mtm_left_rot_22 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_22 for x in self.kinematics))
-        self.kinematics_range['mtm_left_rot_23'] = max(
-            -min(self.kinematics[x].mtm_left_rot_23 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_23 for x in self.kinematics))
-        self.kinematics_range['mtm_left_rot_31'] = max(
-            -min(self.kinematics[x].mtm_left_rot_31 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_31 for x in self.kinematics))
-        self.kinematics_range['mtm_left_rot_32'] = max(
-            -min(self.kinematics[x].mtm_left_rot_32 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_32 for x in self.kinematics))
-        self.kinematics_range['mtm_left_rot_33'] = max(
-            -min(self.kinematics[x].mtm_left_rot_33 for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_rot_33 for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_a'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_a for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_a for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_b'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_b for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_b for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_c'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_c for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_c for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_x'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_x for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_x for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_y'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_y for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_y for x in self.kinematics))
-        self.kinematics_range['mtm_left_velocity_z'] = max(
-            -min(self.kinematics[x].mtm_left_velocity_z for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_velocity_z for x in self.kinematics))
-        self.kinematics_range['mtm_left_gripper'] = max(
-            -min(self.kinematics[x].mtm_left_gripper for x in self.kinematics),
-            max(self.kinematics[x].mtm_left_gripper for x in self.kinematics))
-        self.kinematics_range['mtm_right_pos_x'] = max(
-            -min(self.kinematics[x].mtm_right_pos_x for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_pos_x for x in self.kinematics))
-        self.kinematics_range['mtm_right_pos_y'] = max(
-            -min(self.kinematics[x].mtm_right_pos_y for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_pos_y for x in self.kinematics))
-        self.kinematics_range['mtm_right_pos_z'] = max(
-            -min(self.kinematics[x].mtm_right_pos_z for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_pos_z for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_11'] = max(
-            -min(self.kinematics[x].mtm_right_rot_11 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_11 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_12'] = max(
-            -min(self.kinematics[x].mtm_right_rot_12 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_12 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_13'] = max(
-            -min(self.kinematics[x].mtm_right_rot_13 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_13 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_21'] = max(
-            -min(self.kinematics[x].mtm_right_rot_21 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_21 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_22'] = max(
-            -min(self.kinematics[x].mtm_right_rot_22 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_22 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_23'] = max(
-            -min(self.kinematics[x].mtm_right_rot_23 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_23 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_31'] = max(
-            -min(self.kinematics[x].mtm_right_rot_31 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_31 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_32'] = max(
-            -min(self.kinematics[x].mtm_right_rot_32 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_32 for x in self.kinematics))
-        self.kinematics_range['mtm_right_rot_33'] = max(
-            -min(self.kinematics[x].mtm_right_rot_33 for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_rot_33 for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_a'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_a for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_a for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_b'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_b for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_b for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_c'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_c for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_c for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_x'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_x for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_x for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_y'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_y for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_y for x in self.kinematics))
-        self.kinematics_range['mtm_right_velocity_z'] = max(
-            -min(self.kinematics[x].mtm_right_velocity_z for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_velocity_z for x in self.kinematics))
-        self.kinematics_range['mtm_right_gripper'] = max(
-            -min(self.kinematics[x].mtm_right_gripper for x in self.kinematics),
-            max(self.kinematics[x].mtm_right_gripper for x in self.kinematics))
-        self.kinematics_range['psm_left_pos_x'] = max(
-            -min(self.kinematics[x].psm_left_pos_x for x in self.kinematics),
-            max(self.kinematics[x].psm_left_pos_x for x in self.kinematics))
-        self.kinematics_range['psm_left_pos_y'] = max(
-            -min(self.kinematics[x].psm_left_pos_y for x in self.kinematics),
-            max(self.kinematics[x].psm_left_pos_y for x in self.kinematics))
-        self.kinematics_range['psm_left_pos_z'] = max(
-            -min(self.kinematics[x].psm_left_pos_z for x in self.kinematics),
-            max(self.kinematics[x].psm_left_pos_z for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_11'] = max(
-            -min(self.kinematics[x].psm_left_rot_11 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_11 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_12'] = max(
-            -min(self.kinematics[x].psm_left_rot_12 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_12 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_13'] = max(
-            -min(self.kinematics[x].psm_left_rot_13 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_13 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_21'] = max(
-            -min(self.kinematics[x].psm_left_rot_21 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_21 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_22'] = max(
-            -min(self.kinematics[x].psm_left_rot_22 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_22 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_23'] = max(
-            -min(self.kinematics[x].psm_left_rot_23 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_23 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_31'] = max(
-            -min(self.kinematics[x].psm_left_rot_31 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_31 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_32'] = max(
-            -min(self.kinematics[x].psm_left_rot_32 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_32 for x in self.kinematics))
-        self.kinematics_range['psm_left_rot_33'] = max(
-            -min(self.kinematics[x].psm_left_rot_33 for x in self.kinematics),
-            max(self.kinematics[x].psm_left_rot_33 for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_a'] = max(
-            -min(self.kinematics[x].psm_left_velocity_a for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_a for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_b'] = max(
-            -min(self.kinematics[x].psm_left_velocity_b for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_b for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_c'] = max(
-            -min(self.kinematics[x].psm_left_velocity_c for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_c for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_x'] = max(
-            -min(self.kinematics[x].psm_left_velocity_x for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_x for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_y'] = max(
-            -min(self.kinematics[x].psm_left_velocity_y for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_y for x in self.kinematics))
-        self.kinematics_range['psm_left_velocity_z'] = max(
-            -min(self.kinematics[x].psm_left_velocity_z for x in self.kinematics),
-            max(self.kinematics[x].psm_left_velocity_z for x in self.kinematics))
-        self.kinematics_range['psm_left_gripper'] = max(
-            -min(self.kinematics[x].psm_left_gripper for x in self.kinematics),
-            max(self.kinematics[x].psm_left_gripper for x in self.kinematics))
-        self.kinematics_range['psm_right_pos_x'] = max(
-            -min(self.kinematics[x].psm_right_pos_x for x in self.kinematics),
-            max(self.kinematics[x].psm_right_pos_x for x in self.kinematics))
-        self.kinematics_range['psm_right_pos_y'] = max(
-            -min(self.kinematics[x].psm_right_pos_y for x in self.kinematics),
-            max(self.kinematics[x].psm_right_pos_y for x in self.kinematics))
-        self.kinematics_range['psm_right_pos_z'] = max(
-            -min(self.kinematics[x].psm_right_pos_z for x in self.kinematics),
-            max(self.kinematics[x].psm_right_pos_z for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_11'] = max(
-            -min(self.kinematics[x].psm_right_rot_11 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_11 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_12'] = max(
-            -min(self.kinematics[x].psm_right_rot_12 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_12 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_13'] = max(
-            -min(self.kinematics[x].psm_right_rot_13 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_13 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_21'] = max(
-            -min(self.kinematics[x].psm_right_rot_21 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_21 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_22'] = max(
-            -min(self.kinematics[x].psm_right_rot_22 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_22 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_23'] = max(
-            -min(self.kinematics[x].psm_right_rot_23 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_23 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_31'] = max(
-            -min(self.kinematics[x].psm_right_rot_31 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_31 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_32'] = max(
-            -min(self.kinematics[x].psm_right_rot_32 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_32 for x in self.kinematics))
-        self.kinematics_range['psm_right_rot_33'] = max(
-            -min(self.kinematics[x].psm_right_rot_33 for x in self.kinematics),
-            max(self.kinematics[x].psm_right_rot_33 for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_a'] = max(
-            -min(self.kinematics[x].psm_right_velocity_a for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_a for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_b'] = max(
-            -min(self.kinematics[x].psm_right_velocity_b for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_b for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_c'] = max(
-            -min(self.kinematics[x].psm_right_velocity_c for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_c for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_x'] = max(
-            -min(self.kinematics[x].psm_right_velocity_x for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_x for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_y'] = max(
-            -min(self.kinematics[x].psm_right_velocity_y for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_y for x in self.kinematics))
-        self.kinematics_range['psm_right_velocity_z'] = max(
-            -min(self.kinematics[x].psm_right_velocity_z for x in self.kinematics),
-            max(self.kinematics[x].psm_right_velocity_z for x in self.kinematics))
-        self.kinematics_range['psm_right_gripper'] = max(
-            -min(self.kinematics[x].psm_right_gripper for x in self.kinematics),
-            max(self.kinematics[x].psm_right_gripper for x in self.kinematics))
+
+        colname_i = 0
+        for colname in model.kinematics.columns :
+            self.kinematics_range[colname] = max(
+                -min(getattr(self.kinematics[x],colname) for x in self.kinematics),
+                max (getattr(self.kinematics[x],colname) for x in self.kinematics))
+            #colname_i += 1
+            #print(colname_i)
 
         self.gesture_plot.clear()
         tp = self.gesture_plot.addSubplots(
@@ -530,86 +310,14 @@ class Handler (VideoPlayer):
         frame = time // Gst.FRAME
         if frame not in self.kinematics : return
 
-        k = self.kinematics[frame]
         x = self.kinematic_store.get_iter_first()
 
-        normalize = lambda value, abs_max : value * 50 / abs_max + 50
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_x, self.kinematics_range['mtm_left_pos_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_y, self.kinematics_range['mtm_left_pos_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_pos_z, self.kinematics_range['mtm_left_pos_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_11, self.kinematics_range['mtm_left_rot_11'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_12, self.kinematics_range['mtm_left_rot_12'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_13, self.kinematics_range['mtm_left_rot_13'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_21, self.kinematics_range['mtm_left_rot_21'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_22, self.kinematics_range['mtm_left_rot_22'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_23, self.kinematics_range['mtm_left_rot_23'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_31, self.kinematics_range['mtm_left_rot_31'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_32, self.kinematics_range['mtm_left_rot_32'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_rot_33, self.kinematics_range['mtm_left_rot_33'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_a, self.kinematics_range['mtm_left_velocity_a'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_b, self.kinematics_range['mtm_left_velocity_b'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_c, self.kinematics_range['mtm_left_velocity_c'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_x, self.kinematics_range['mtm_left_velocity_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_y, self.kinematics_range['mtm_left_velocity_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_velocity_z, self.kinematics_range['mtm_left_velocity_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_left_gripper, self.kinematics_range['mtm_left_gripper'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_x, self.kinematics_range['mtm_right_pos_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_y, self.kinematics_range['mtm_right_pos_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_pos_z, self.kinematics_range['mtm_right_pos_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_11, self.kinematics_range['mtm_right_rot_11'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_12, self.kinematics_range['mtm_right_rot_12'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_13, self.kinematics_range['mtm_right_rot_13'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_21, self.kinematics_range['mtm_right_rot_21'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_22, self.kinematics_range['mtm_right_rot_22'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_23, self.kinematics_range['mtm_right_rot_23'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_31, self.kinematics_range['mtm_right_rot_31'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_32, self.kinematics_range['mtm_right_rot_32'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_rot_33, self.kinematics_range['mtm_right_rot_33'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_a, self.kinematics_range['mtm_right_velocity_a'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_b, self.kinematics_range['mtm_right_velocity_b'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_c, self.kinematics_range['mtm_right_velocity_c'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_x, self.kinematics_range['mtm_right_velocity_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_y, self.kinematics_range['mtm_right_velocity_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_velocity_z, self.kinematics_range['mtm_right_velocity_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.mtm_right_gripper, self.kinematics_range['mtm_right_gripper'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_x, self.kinematics_range['psm_left_pos_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_y, self.kinematics_range['psm_left_pos_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_pos_z, self.kinematics_range['psm_left_pos_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_11, self.kinematics_range['psm_left_rot_11'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_12, self.kinematics_range['psm_left_rot_12'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_13, self.kinematics_range['psm_left_rot_13'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_21, self.kinematics_range['psm_left_rot_21'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_22, self.kinematics_range['psm_left_rot_22'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_23, self.kinematics_range['psm_left_rot_23'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_31, self.kinematics_range['psm_left_rot_31'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_32, self.kinematics_range['psm_left_rot_32'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_rot_33, self.kinematics_range['psm_left_rot_33'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_a, self.kinematics_range['psm_left_velocity_a'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_b, self.kinematics_range['psm_left_velocity_b'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_c, self.kinematics_range['psm_left_velocity_c'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_x, self.kinematics_range['psm_left_velocity_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_y, self.kinematics_range['psm_left_velocity_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_velocity_z, self.kinematics_range['psm_left_velocity_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_left_gripper, self.kinematics_range['psm_left_gripper'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_x, self.kinematics_range['psm_right_pos_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_y, self.kinematics_range['psm_right_pos_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_pos_z, self.kinematics_range['psm_right_pos_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_11, self.kinematics_range['psm_right_rot_11'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_12, self.kinematics_range['psm_right_rot_12'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_13, self.kinematics_range['psm_right_rot_13'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_21, self.kinematics_range['psm_right_rot_21'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_22, self.kinematics_range['psm_right_rot_22'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_23, self.kinematics_range['psm_right_rot_23'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_31, self.kinematics_range['psm_right_rot_31'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_32, self.kinematics_range['psm_right_rot_32'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_rot_33, self.kinematics_range['psm_right_rot_33'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_a, self.kinematics_range['psm_right_velocity_a'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_b, self.kinematics_range['psm_right_velocity_b'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_c, self.kinematics_range['psm_right_velocity_c'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_x, self.kinematics_range['psm_right_velocity_x'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_y, self.kinematics_range['psm_right_velocity_y'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_velocity_z, self.kinematics_range['psm_right_velocity_z'])); x = self.kinematic_store.iter_next(x)
-        self.kinematic_store.set_value(x, 1, normalize(k.psm_right_gripper, self.kinematics_range['psm_right_gripper'])); x = self.kinematic_store.iter_next(x)
+        for colname in model.kinematics.columns :
+            value = getattr(self.kinematics[frame], colname)
+            abs_max = self.kinematics_range[colname]
+
+            self.kinematic_store.set_value(x, 1, value * 50 / abs_max + 50)
+            x = self.kinematic_store.iter_next(x)
 
         self.live_diagram.vline = time / self.video_duration
         self.gesture_plot.highlight_point = frame - 1 # index of the current frame's item in the series
@@ -623,17 +331,32 @@ class Handler (VideoPlayer):
         self.suppress_on_gesture_selection_changed = False
 
     def onExportClicked(self, *dontcare):
-        self.export_dialog.run()
+        self.export_target = EXPORT_TARGET_ALL
+        self.export_dialog.show()
 
-    def onExportDialogCancel(self, *dontcare): self.export_dialog.close()
+    def onExportDialogCancel(self, *dontcare):
+        'Clean out the SQL entry, reset the checkboxes and hide the dialog.'
+
+        self.export_query.set_text('')
+        for colname in model.kinematics.columns :
+            map(lambda x: self.builder.get_object('export_' + colname), model.kinematics.columns).set_active(True)
+
+        self.export_dialog.hide()
+        return True
 
     def onExportDialogSave(self, *dontcare):
         import scipy.io
-        query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
+        if self.export_query.get_text().strip() :
+            query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
+        else :
+            checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns)
+            active = [x for x in checkbuttons if x.get_active()] or checkbuttons
+            selected_columns = ', '.join(x.get_label() for x in active if x.get_active())
+            query = 'SELECT id, video_id, frame, {} from Kinematic'.format(selected_columns)
         arr = list(db.execute_sql(query))
         print (arr)
         scipy.io.savemat('file.mat', {'result':arr})
-        self.export_dialog.close()
+        self.onExportDialogCancel()
 
 def start(config) :
     font = {'family': 'DejaVu Sans',

@@ -1,3 +1,9 @@
+meta = [
+    'id',
+    'video_id',
+    'frame'
+]
+
 columns = [
     'mtm_left_pos_x',
     'mtm_left_pos_y',
