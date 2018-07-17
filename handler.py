@@ -63,7 +63,6 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
         self.export_dialog = builder.get_object("export_dialog")
         self.export_query = builder.get_object("export_query")
-        self.treeview_video = builder.get_object("treeview_video")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -105,7 +104,7 @@ class Handler (VideoPlayer):
 
         # set up video store filter
         self.video_store.filter = self.video_store.filter_new()
-        self.treeview_video.set_model(self.video_store.filter)
+        builder.get_object("treeview_video").set_model(self.video_store.filter)
         self.video_store.filter.set_visible_func(self.videoStoreFilter)
 
         # get task list
@@ -364,6 +363,13 @@ class Handler (VideoPlayer):
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
                 conditions = 'video_id = {}'.format(self.video.id)
+            elif self.export_magnitude == EXPORT_TARGET_GESTURES :
+                store, iter = self.gesture_playlist_selection.get_selected()
+                if not store or not iter : return
+                id, desc, start, end = store[iter]
+                conditions = 'video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, start, end)
+            elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
+                pass
 
 
 
@@ -375,9 +381,12 @@ class Handler (VideoPlayer):
                                        Gtk.FileChooserAction.SAVE,
                                        ("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.ACCEPT))
         result = dialog.run()
-        if result != Gtk.ResponseType.ACCEPT : return
-        filename = dialog.get_filename()
-        dialog.destroy()
+        if result != Gtk.ResponseType.ACCEPT :
+            dialog.destroy()
+            return
+        else :
+            filename = dialog.get_filename()
+            dialog.destroy()
 
         arr = list(db.execute_sql(query))
         #print(arr)
