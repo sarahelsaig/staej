@@ -9,6 +9,7 @@ from videoplayer import VideoPlayer
 import livediagram
 import matplotlib
 from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
+from collections import namedtuple
 
 def debug(vars) :
     from IPython import embed
@@ -16,6 +17,7 @@ def debug(vars) :
         locals()[x] = vars[x]
     embed()
 
+GestureStoreItem = namedtuple('GestureStoreItem', 'id desc start end')
 
 DIR_CONFIG = 'dir_config'
 READY = "Ready"
@@ -334,6 +336,11 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection.select_iter(self.gesture_store.iter_nth_child(None, gesture_index))
         self.suppress_on_gesture_selection_changed = False
 
+    def getSelectedGesture(self):
+        store, iter = self.gesture_playlist_selection.get_selected()
+        if store and iter:
+            return GestureStoreItem(*store[iter])
+
     def onExportClicked(self, *dontcare):
         self.export_target = EXPORT_TARGET_EVERYTHING
         self.export_dialog.show()
@@ -359,21 +366,22 @@ class Handler (VideoPlayer):
             selected_columns = ', '.join(x.get_label() for x in active if x.get_active()) or '*'
 
             if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
-                conditions = '1=1'
+                conditions = ''
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
-                conditions = 'video_id = {}'.format(self.video.id)
+                conditions = 'where video_id = {}'.format(self.video.id)
             elif self.export_magnitude == EXPORT_TARGET_GESTURES :
-                store, iter = self.gesture_playlist_selection.get_selected()
-                if not store or not iter : return
-                id, desc, start, end = store[iter]
-                conditions = 'video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, start, end)
+                gesture = self.getSelectedGesture()
+                if not gesture: return
+                conditions = 'where video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, gesture.start, gesture.end)
             elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
-                pass
+                gesture = self.getSelectedGesture()
+                if not gesture: return
+                conditions = 'inner join Transcript on Transcript.gesture_id = {} and Kinematic.video_id = Transcript.video_id and Kinematic.frame between Transcript.start and Transcript.end'.format(gesture.id)
 
 
 
-        query = 'SELECT {} from Kinematic where {}'.format(selected_columns, conditions)
+        query = 'SELECT {} from Kinematic {}'.format(selected_columns, conditions)
         print(query)
 
         dialog = Gtk.FileChooserDialog("Save Export",
