@@ -31,6 +31,8 @@ EXPORT_TARGET_VIDEO = 'video'
 EXPORT_TARGET_GESTURES = 'gestures'
 EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
 
+EXPORT_SQL_JOINS_WITHGESTURES = 'inner join Transcript on Kinematic.video_id = Transcript.video_id and Kinematic.frame between Transcript.start and Transcript.end'
+
 class Handler (VideoPlayer):
     __task_name = ""
     __video_name = ""
@@ -365,32 +367,42 @@ class Handler (VideoPlayer):
 
     def onExportDialogSave(self, *dontcare):
         import scipy.io
+
+        joins = []
+        conditions = []
+
         if self.export_query.get_text().strip() :
             query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
         else :
-            checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns)
-            active = [x for x in checkbuttons if x.get_active()]
-            selected_columns = ', '.join(x.get_label() for x in active if x.get_active()) or '*'
+            checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns + ['gesture_id', 'gesture_description'])
+            active = [x.get_name() for x in checkbuttons if x.get_active()]
+            selected_columns = ', '.join(active) or '*'
+
+            # join in gestures if needed
+            if any(x for x in active if x.startswith('Gesture.')) :
+                joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
 
             if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
-                conditions = ''
+                pass
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
-                conditions = 'where video_id = {}'.format(self.video.id)
+                conditions.append('video_id = {}'.format(self.video.id))
             elif self.export_magnitude == EXPORT_TARGET_GESTURES :
                 gesture = self.getSelectedGesture()
                 if not gesture: return
-                conditions = 'where video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, gesture.start, gesture.end)
+                conditions.append('video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, gesture.start, gesture.end))
             elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
                 gesture = self.getSelectedGesture()
                 if not gesture: return
-                conditions = 'inner join Transcript on Transcript.gesture_id = {} and Kinematic.video_id = Transcript.video_id and Kinematic.frame between Transcript.start and Transcript.end'.format(gesture.id)
+                joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
+                conditions.append('Transcript.gesture_id = {}'.format(gesture.id))
 
+            joins = ' '.join(set(joins))
+            conditions = ' '.join(set(conditions))
+            conditions = ('where {}'.format(conditions)) if conditions else ''
+            query = 'SELECT {} from Kinematic {} {}'.format(selected_columns, joins, conditions)
 
-
-        query = 'SELECT {} from Kinematic {}'.format(selected_columns, conditions)
         print(query)
-
         dialog = Gtk.FileChooserDialog("Save Export",
                                        self.main_window,
                                        Gtk.FileChooserAction.SAVE,
