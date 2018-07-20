@@ -132,6 +132,9 @@ class Handler (VideoPlayer):
         # kinematics
         self.kinematics = dict()
 
+        # which kinematics trajectory to display (MTM or PSM; MTM is default)
+        self.arm_type = 'mtm'
+
         # finalization
         self.main_window.show_all()
         self.main_window.maximize()
@@ -294,20 +297,24 @@ class Handler (VideoPlayer):
             #colname_i += 1
             #print(colname_i)
 
-        self.gesture_plot.clear()
-        tp = self.gesture_plot.addSubplots(
-            'MTM Left Position',
-            [self.kinematics[x].mtm_left_pos_x for x in self.kinematics],
-            [self.kinematics[x].mtm_left_pos_y for x in self.kinematics],
-            [self.kinematics[x].mtm_left_pos_z for x in self.kinematics],
-            'MTM Right Position',
-            [self.kinematics[x].mtm_right_pos_x for x in self.kinematics],
-            [self.kinematics[x].mtm_right_pos_y for x in self.kinematics],
-            [self.kinematics[x].mtm_right_pos_z for x in self.kinematics],
-        )
+        self.updateGesturePlot(self.arm_type)
 
         self.onKspToggled()
 
+    def updateGesturePlot(self, arm_type):
+        self.gesture_plot.clear()
+        arm_type_label = arm_type.upper()
+
+        self.gesture_plot.addSubplots(
+            arm_type_label + ' Left Position',
+            [getattr(self.kinematics[x], arm_type + '_left_pos_x') for x in self.kinematics],
+            [getattr(self.kinematics[x], arm_type + '_left_pos_y') for x in self.kinematics],
+            [getattr(self.kinematics[x], arm_type + '_left_pos_z') for x in self.kinematics],
+            arm_type_label +' Right Position',
+            [getattr(self.kinematics[x], arm_type + '_right_pos_x') for x in self.kinematics],
+            [getattr(self.kinematics[x], arm_type + '_right_pos_y') for x in self.kinematics],
+            [getattr(self.kinematics[x], arm_type + '_right_pos_z') for x in self.kinematics],
+        )
 
     def updateDiagramData(self):
         self.live_diagram.data = [[getattr(self.kinematics[x], attr) for x in self.kinematics] for attr in self.selected]
@@ -397,13 +404,18 @@ class Handler (VideoPlayer):
             dialog.destroy()
 
         arr = list(db.execute_sql(query))
-        #print(arr)
         scipy.io.savemat(filename, {'result':arr})
         self.onExportDialogCancel()
 
     def onExportMagnitudeChanged(self, radio):
         if radio.get_active() :
             self.export_magnitude = radio.get_name()
+
+    def onGestureDiagramTargetChanged(self, radio):
+        if radio.get_active() :
+            self.arm_type = radio.get_name().rpartition('_')[-1]
+            self.updateGesturePlot(self.arm_type)
+
 
 def start(config) :
     font = {'family': 'DejaVu Sans',
