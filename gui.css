@@ -1,0 +1,13 @@
+.export_builder_accordion > * {
+    /* background-color: #f9f9f9; */
+    padding: 12px;
+}
+
+.export_builder_accordion > button {
+    /* background-color: #ffffff; */
+    padding: 0px;
+}
+
+.accordion_end_padding {
+    background-color: #a6a6a6;
+}

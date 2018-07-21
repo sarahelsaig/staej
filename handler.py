@@ -10,6 +10,7 @@ import livediagram
 import matplotlib
 from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
 from collections import namedtuple
+from accordion import Accordion
 
 def debug(vars) :
     from IPython import embed
@@ -43,7 +44,7 @@ class Handler (VideoPlayer):
     video = None
     selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
 
-    def __init__(self, glade_file, dir_config):
+    def __init__(self, glade_file, css_file, dir_config):
         VideoPlayer.__init__(self)
 
         # set up Glade builder
@@ -69,6 +70,13 @@ class Handler (VideoPlayer):
         self.export_query = builder.get_object("export_query")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
+
+        # gui styling
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_path(css_file)
+        style_context = self.main_window.get_style_context()
+        screen = self.main_window.get_screen()
+        style_context.add_provider_for_screen(screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # gui binding
         self.register("video_name", self.main_window, set_converter=lambda x: '{} - staej'.format(x) if x else 'staej')
@@ -148,6 +156,7 @@ class Handler (VideoPlayer):
         self.export_dialog.set_modal(self.main_window)
         #self.export_dialog.run()
         #self.export_dialog.hide()
+        self.export_accordion = Accordion(self.builder.get_object('export_builder_accordion'), True)
 
 
     @GObject.Property(type=str)
@@ -351,7 +360,9 @@ class Handler (VideoPlayer):
             return GestureStoreItem(*store[iter])
 
     def onExportClicked(self, *dontcare):
-        self.export_target = EXPORT_TARGET_EVERYTHING
+        self.export_magnitude = EXPORT_TARGET_EVERYTHING
+        self.builder.get_object('export_magnitude_everything').set_active(True)
+        self.export_accordion.set(self.export_accordion.first, True)
         self.export_dialog.show()
 
     def onExportDialogCancel(self, *dontcare):
@@ -381,16 +392,17 @@ class Handler (VideoPlayer):
             # join in gestures if needed
             if any(x for x in active if x.startswith('Gesture.')) :
                 joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
+                joins.append("inner join Gesture on Transcript.gesture_id = Gesture.id")
 
             if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
                 pass
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
-                conditions.append('video_id = {}'.format(self.video.id))
+                conditions.append('Kinematic.video_id = {}'.format(self.video.id))
             elif self.export_magnitude == EXPORT_TARGET_GESTURES :
                 gesture = self.getSelectedGesture()
                 if not gesture: return
-                conditions.append('video_id = {} and frame >= {} and frame <= {}'.format(self.video.id, gesture.start, gesture.end))
+                conditions.append('Kinematic.video_id = {} and Kinematic.frame between {} and {}'.format(self.video.id, gesture.start, gesture.end))
             elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
                 gesture = self.getSelectedGesture()
                 if not gesture: return
@@ -442,5 +454,5 @@ def start(config) :
     global db
     db = model.database.connectFileDb(config)
 
-    handler = Handler("gui.glade", config[DIR_CONFIG])
+    handler = Handler("gui.glade", "gui.css", config[DIR_CONFIG])
     return Gtk.main()
