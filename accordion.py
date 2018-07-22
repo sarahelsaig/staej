@@ -39,13 +39,13 @@ class Accordion :
                 self.toggle_buttons.append(owner)
             owner.connect('clicked', self.on_header_click)
 
+        self.set(self.first, True)
+
         if add_end_padding:
             label = Gtk.Label()
-            label.set_css_name('accordion_end_padding')
-            label.set_text('asd')
-            widget.pack_end(label, True, True, 0)
-
-        self.set(self.first, True)
+            widget.pack_start(label, True, True, 0)
+            label.get_style_context().add_class('accordion_end_padding')
+            label.show()
 
     def set(self, button, is_active):
         for child in self.subscription[button] :

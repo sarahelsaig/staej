@@ -34,6 +34,21 @@ EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
 
 EXPORT_SQL_JOINS_WITHGESTURES = 'inner join Transcript on Kinematic.video_id = Transcript.video_id and Kinematic.frame between Transcript.start and Transcript.end'
 
+
+def add_filter_to_chooser(dialog, name, pattern) :
+    """
+    Adds a new pattern-based file filter to  the FileChooserDialog
+    :param dialog: The Gtk.FileChooserDialog.
+    :param name: The display name of the filter.
+    :param pattern: The text pattern to use. (eg.: "*.csv")
+    :return: None
+    """
+    file_filter_type = Gtk.FileFilter()
+    file_filter_type.add_pattern(pattern)
+    file_filter_type.set_name(name)
+    dialog.add_filter(file_filter_type)
+
+
 class Handler (VideoPlayer):
     __task_name = ""
     __video_name = ""
@@ -68,6 +83,7 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
         self.export_dialog = builder.get_object("export_dialog")
         self.export_query = builder.get_object("export_query")
+        self.export_filetype_mat = builder.get_object("export_filetype_mat")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -369,7 +385,7 @@ class Handler (VideoPlayer):
         'Clean out the SQL entry, reset the checkboxes and hide the dialog.'
 
         self.builder.get_object('export_magnitude_everything').set_active(True)
-        self.export_query.set_text('')
+        self.export_query.get_buffer().clear()
         for colname in model.kinematics.meta + model.kinematics.columns :
             self.builder.get_object('export_' + colname).set_active(False)
 
@@ -377,14 +393,15 @@ class Handler (VideoPlayer):
         return True
 
     def onExportDialogSave(self, *dontcare):
-        import scipy.io
-
+        # get SQL query
         joins = []
         conditions = []
 
         if self.export_query.get_text().strip() :
+            # get user query
             query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
         else :
+            # build query
             checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns + ['gesture_id', 'gesture_description'])
             active = [x.get_name() for x in checkbuttons if x.get_active()]
             selected_columns = ', '.join(active) or '*'
@@ -414,11 +431,17 @@ class Handler (VideoPlayer):
             conditions = ('where {}'.format(conditions)) if conditions else ''
             query = 'SELECT {} from Kinematic {} {}'.format(selected_columns, joins, conditions)
 
+        # get export file type
+        filetype = next(x.get_name().replace('export_filetype_', '') for x in self.export_filetype_mat.get_group() if x.get_active())
+
+        # select target file name
         print(query)
-        dialog = Gtk.FileChooserDialog("Save Export",
+        dialog = Gtk.FileChooserDialog('Save Export',
                                        self.main_window,
                                        Gtk.FileChooserAction.SAVE,
-                                       ("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.ACCEPT))
+                                       ('Cancel', Gtk.ResponseType.CANCEL, 'Save', Gtk.ResponseType.ACCEPT))
+        add_filter_to_chooser(dialog, filetype.upper(), '*.' + filetype)
+        add_filter_to_chooser(dialog, 'Anything', '*')
         result = dialog.run()
         if result != Gtk.ResponseType.ACCEPT :
             dialog.destroy()
@@ -426,9 +449,17 @@ class Handler (VideoPlayer):
         else :
             filename = dialog.get_filename()
             dialog.destroy()
+            if '.' not in filename :
+                filename = '{}.{}'.format(filename, filetype)
 
+        # evaluate query
         arr = list(db.execute_sql(query))
+
+        # export MAT file
+        import scipy.io
         scipy.io.savemat(filename, {'result':arr})
+
+        #close dialog
         self.onExportDialogCancel()
 
     def onExportMagnitudeChanged(self, radio):
@@ -439,6 +470,13 @@ class Handler (VideoPlayer):
         if radio.get_active() :
             self.arm_type = radio.get_name().rpartition('_')[-1]
             self.updateGesturePlot(self.arm_type)
+
+
+Gtk.TextBuffer.get_all_text = lambda buffer: buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
+Gtk.TextBuffer.clear = lambda buffer: buffer.delete(buffer.get_start_iter(), buffer.get_end_iter())
+
+Gtk.TextView.get_text = lambda textview: textview.get_buffer().get_all_text()
+Gtk.TextView.set_text = lambda textview, text: textview.get_buffer().set_text(text, -1)
 
 
 def start(config) :
@@ -454,5 +492,5 @@ def start(config) :
     global db
     db = model.database.connectFileDb(config)
 
-    handler = Handler("gui.glade", "gui.css", config[DIR_CONFIG])
+    Handler("gui.glade", "gui.css", config[DIR_CONFIG])
     return Gtk.main()

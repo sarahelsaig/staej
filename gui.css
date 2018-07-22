@@ -10,4 +10,11 @@
 
 .accordion_end_padding {
     background-color: #a6a6a6;
+    font-size: 0px;
+}
+
+.export_query > * {
+    border: 1px solid black;
+    color: #444444;
+    background-color: white;
 }
