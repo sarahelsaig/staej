@@ -4,6 +4,7 @@ import model.database
 import model.kinematics
 from gi.repository import GObject, Gst, Gtk
 import os
+import peewee
 from peewee import fn
 from videoplayer import VideoPlayer
 import livediagram
@@ -83,7 +84,7 @@ class Handler (VideoPlayer):
         self.gesture_playlist_selection = builder.get_object("gesture_playlist_selection")
         self.export_dialog = builder.get_object("export_dialog")
         self.export_query = builder.get_object("export_query")
-        self.export_filetype_mat = builder.get_object("export_filetype_mat")
+        self.export_filetype_default = builder.get_object("export_filetype_default")
 
         self.ksp_checkbuttons = builder.get_object("ksp_box").get_children()
 
@@ -429,10 +430,10 @@ class Handler (VideoPlayer):
             joins = ' '.join(set(joins))
             conditions = ' '.join(set(conditions))
             conditions = ('where {}'.format(conditions)) if conditions else ''
-            query = 'SELECT {} from Kinematic {} {}'.format(selected_columns, joins, conditions)
+            query = 'SELECT {} from Kinematic {} {}'.format(selected_columns.replace('Gesture.id', 'Gesture.id as gesture_id'), joins, conditions)
 
         # get export file type
-        filetype = next(x.get_name().replace('export_filetype_', '') for x in self.export_filetype_mat.get_group() if x.get_active())
+        filetype = next(x.get_name().replace('export_filetype_', '') for x in self.export_filetype_default.get_group() if x.get_active())
 
         # select target file name
         print(query)
@@ -453,11 +454,26 @@ class Handler (VideoPlayer):
                 filename = '{}.{}'.format(filename, filetype)
 
         # evaluate query
-        arr = list(db.execute_sql(query))
+        q = peewee.RawQuery(query)
+        q.bind(db)
+        results = q.execute()
+        arr = list()
+        for row in list(results):
+            r = list()
+            for name in results.columns:
+                r.append(row[name])
+            arr.append(r)
 
-        # export MAT file
-        import scipy.io
-        scipy.io.savemat(filename, {'result':arr})
+        if filetype == 'mat' :
+            # export MAT file
+            import scipy.io
+            scipy.io.savemat(filename, { 'result' : arr })
+        elif filetype == 'csv' :
+            import csv
+            arr.insert(0, results.columns)
+            with open(filename, 'w') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerows(arr)
 
         #close dialog
         self.onExportDialogCancel()

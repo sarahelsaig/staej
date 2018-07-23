@@ -1547,7 +1547,7 @@
                 <property name="orientation">vertical</property>
                 <property name="layout_style">start</property>
                 <child>
-                  <object class="GtkRadioButton" id="export_filetype_mat">
+                  <object class="GtkRadioButton" id="export_filetype_default">
                     <property name="label" translatable="yes">MAT: MatLab file</property>
                     <property name="name">export_filetype_mat</property>
                     <property name="visible">True</property>
@@ -1565,13 +1565,13 @@
                 <child>
                   <object class="GtkRadioButton">
                     <property name="label" translatable="yes">CSV: table of comma separated lists</property>
-                    <property name="name">export_filetype_mat</property>
+                    <property name="name">export_filetype_csv</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
-                    <property name="group">export_filetype_mat</property>
+                    <property name="group">export_filetype_default</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
