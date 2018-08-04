@@ -14,10 +14,13 @@ from collections import namedtuple
 from accordion import Accordion
 
 def debug(vars) :
-    from IPython import embed
-    for x in vars :
-        locals()[x] = vars[x]
-    embed()
+    try :
+        from IPython import embed
+        for x in vars :
+            locals()[x] = vars[x]
+        embed()
+    except :
+        pass
 
 GestureStoreItem = namedtuple('GestureStoreItem', 'id desc start end')
 
