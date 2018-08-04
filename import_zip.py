@@ -53,63 +53,71 @@ def connect_file_db(config) :
 def extract_videos(filename, config) :
     dir_tasks = config[DIR_TASKS]
 
-    with zipfile.ZipFile(filename) as zf :
-        # get task name and create video folder
-        name = dirname(next_or_default((x for x in zf.namelist() if x.endswith('/video/')), default='').rstrip('/'))
-        if not name:
-            raise Exception()
-        dir_task = path.join(dir_tasks, name)
-        makedirs(dir_task, exist_ok=True)
-        print(0)
+    db = connect_file_db(config)
+    db.execute_sql('PRAGMA journal_mode = OFF')
 
-        # extract videos
-        videos = (x for x in zf.namelist() if '/video/' in x and ('_capture1.avi' in x or '_capture2.avi' in x))
-        zf.extractall(path=dir_tasks, members=videos)
-        print(1)
+    with db.atomic() as transaction :
+        try :
+            with zipfile.ZipFile(filename) as zf :
+                # get task name and create video folder
+                name = dirname(next_or_default((x for x in zf.namelist() if x.endswith('/video/')), default='').rstrip('/'))
+                if not name:
+                    raise Exception()
 
-        db = connect_file_db(config)
-        gestures = dict(('G{}'.format(x.id), x) for x in model.database.Gesture.select())
-        task = model.database.Task(name=name)
-        task.save()
-        print('task_id:', task.id)
-        print(2)
+                dir_task = path.join(dir_tasks, name)
+                makedirs(dir_task, exist_ok=True)
+                print(0)
 
-        # open meta file
-        meta = next_or_default(x for x in zf.namelist() if 'meta_file' in x.lower())
-        if not meta :
-            raise Exception(EXCEPTION_MISSING_META_FILE)
-        print(3)
-        with zf.open(meta) as file_descriptor_meta :
-            print(4)
+                # extract videos
+                videos = (x for x in zf.namelist() if '/video/' in x and ('_capture1.avi' in x or '_capture2.avi' in x))
+                zf.extractall(path=dir_tasks, members=videos)
+                print(1)
 
-            # from IPython import embed
-            # embed()
+                gestures = dict(('G{}'.format(x.id), x) for x in model.database.Gesture.select())
+                task = model.database.Task(name=name)
+                task.save()
+                print('task_id:', task.id)
+                print(2)
 
-            for row_meta in read_lines_as_csv(file_descriptor_meta) :
-                print(5)
-                video = model.database.Video.new(task.id, row_meta)
-                # video.save(force_insert=True)
+                # open meta file
+                meta = next_or_default(x for x in zf.namelist() if 'meta_file' in x.lower())
+                if not meta :
+                    raise Exception(EXCEPTION_MISSING_META_FILE)
+                print(3)
+                with zf.open(meta) as file_descriptor_meta :
+                    print(4)
 
-                file_kinematics = next(x for x in zf.namelist() if '/kinematics/' in x and video.file_name in x)
-                with zf.open(file_kinematics) as file_descriptor_kinematics :
-                    print(6)
-                    frame = 0
-                    for row_kinematics in read_lines_as_csv(file_descriptor_kinematics, delimiter=' ', line_cb=True) :
-                        frame += 1
-                        kinematic = model.database.Kinematic.new(video.id, frame, row_kinematics)
-                        if kinematic.id % 10 == 0 :
+                    # from IPython import embed
+                    # embed()
+
+                    for row_meta in read_lines_as_csv(file_descriptor_meta) :
+                        print(5)
+                        video = model.database.Video.new(task.id, row_meta)
+                        # video.save(force_insert=True)
+
+                        file_kinematics = next(x for x in zf.namelist() if '/kinematics/' in x and video.file_name in x)
+                        with zf.open(file_kinematics) as file_descriptor_kinematics :
+                            print(6)
+                            frame = 0
+                            for row_kinematics in read_lines_as_csv(file_descriptor_kinematics,
+                                                                    delimiter=' ', line_cb=True) :
+                                frame += 1
+                                kinematic = model.database.Kinematic.new(video.id, frame, row_kinematics)
                             print(7, video.id , kinematic.id)
 
-                db.begin()
-                file_transcript = next(x for x in zf.namelist() if '/transcriptions/' in x and video.file_name in x)
-                with zf.open(file_transcript) as file_descriptor_transcript :
-                    print(8)
+                        # db.begin()
+                        file_transcript = next(x for x in zf.namelist() if '/transcriptions/' in x and video.file_name in x)
+                        with zf.open(file_transcript) as file_descriptor_transcript :
+                            print(8)
 
-                    for row_descriptor_transcript in read_lines_as_csv(file_descriptor_transcript, delimiter=' ') :
-                        transcript = model.database.Transcript.new(
-                            task.id, video.id, row_descriptor_transcript, gestures)
-                        if transcript.id % 10 == 0 :
+                            for row_descriptor_transcript in read_lines_as_csv(file_descriptor_transcript, delimiter=' ') :
+                                transcript = model.database.Transcript.new(
+                                    task.id, video.id, row_descriptor_transcript, gestures)
                             print(9, video.id , transcript.id)
 
-                db.commit()
-    return name
+                        # db.commit()
+        except Exception as e :
+            transaction.rollback()
+            raise e
+
+        return name

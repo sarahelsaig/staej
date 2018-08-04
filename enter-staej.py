@@ -28,7 +28,10 @@ if len(args.zipfile) > 0 :
 
             name = extract_videos(file_name, globals())
 
-            print(basename, ':', 'done')
+            if name :
+                print(basename, ':', 'done')
+            else :
+                print(basename, ':', 'failed')
         except StopIteration as e:  # Exception as e :
             print(basename, ':', e)
             import traceback
