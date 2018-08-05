@@ -82,5 +82,5 @@ Figure 7 . The main screen of staej and the second tab
 12. The kinematics box shows the current state of all kinematic variables at the moment of the currently displayed frame.
 13. The Gestures panel is a “playlist” style interface where the user can jump to the beginning of a specific gesture within the video. The start and end
 
-[fig7]: docs/images/image6.png
+[fig1]: docs/images/image6.png
 [fig7]: docs/images/image3.png
