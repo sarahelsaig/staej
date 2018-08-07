@@ -5,7 +5,6 @@ import cairo
 import gi
 import gnotifier
 from gi.repository import GObject, Gtk
-from IPython import embed
 
 COLORS = [
     [0.9569, 0.2627, 0.2118],
