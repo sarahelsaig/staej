@@ -6,6 +6,10 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 gi.require_version('GstVideo', '1.0')
 
+# handle Windows / MSYS2 
+if sys.platform == "win32" or sys.platform == "msys" :
+    os.environ['GDK_WIN32_LAYERED'] = '0'
+
 # check & create software data directory
 dir_config = os.path.expandvars('$APPDATA/staej').replace('$APPDATA', os.path.expanduser('~/.config'))
 dir_tasks = os.path.join(dir_config, 'tasks')
