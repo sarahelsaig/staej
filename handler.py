@@ -32,6 +32,7 @@ framesToMinutesStr = lambda s : "{:02d}:{:02d}".format(s // 1800, (s // 30) % 60
 GESTURE_ID, GESTURE_NAME, GESTURE_START, GESTURE_END = range(4)
 
 EXPORT_TARGET_EVERYTHING = 'everything'
+EXPORT_TARGET_TASK = 'task'
 EXPORT_TARGET_VIDEO = 'video'
 EXPORT_TARGET_GESTURES = 'gestures'
 EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
@@ -452,6 +453,11 @@ class Handler (VideoPlayer):
 
             if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
                 pass
+            elif self.export_magnitude == EXPORT_TARGET_TASK :
+                if not self.video : return
+                videos = model.database.Video.select().where(model.database.Video.task_id == self.video.task_id)
+                video_ids = ', '.join(map(str, videos.select(model.database.Video.id)))
+                conditions.append('Kinematic.video_id in ({})'.format(video_ids))
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
                 conditions.append('Kinematic.video_id = {}'.format(self.video.id))
