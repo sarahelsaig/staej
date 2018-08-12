@@ -59,6 +59,8 @@ class Handler (VideoPlayer):
     __video_length = 0
     __video_search = ""
     __app_status = ""
+    __export_filename_filter = False
+    __export_filename_filter_regex = False
 
     video = None
     selected = ['mtm_left_pos_x', 'mtm_left_pos_y', 'mtm_left_pos_z']
@@ -66,14 +68,16 @@ class Handler (VideoPlayer):
     def __init__(self, glade_file, css_file, dir_config):
         VideoPlayer.__init__(self)
 
+        # store init parameters
+        self.glade_file = glade_file
+        self.css_file = css_file
+        self.dir_config = dir_config
+
         # set up Glade builder
         builder = Gtk.Builder()
-        self.glade_file = glade_file
         builder.add_from_file(glade_file)
         builder.connect_signals(self)
         self.builder = builder
-
-        self.dir_config = dir_config
 
         # get elements by ID
         self.video_store = builder.get_object("video_store")
@@ -100,12 +104,11 @@ class Handler (VideoPlayer):
 
         # gui binding
         self.register("video_name", self.main_window, set_converter=lambda x: '{} - staej'.format(x) if x else 'staej')
-        self.register("task_name", builder.get_object("label_task_name"))
-        self.register("video_name", builder.get_object("label_video_name"))
-        self.register("video_length", builder.get_object("label_video_length"),
-                      set_converter=framesToMinutesStr)
-        self.register("video_position", self.scale_video_position)
-        self.register("video_search", builder.get_object("entry_video_search"))
+        self.register_widget("task_name", "label_task_name")
+        self.register_widget("video_name", "label_video_name")
+        self.register_widget("video_length", "label_video_length", set_converter=framesToMinutesStr)
+        self.register_widget("video_position", "scale_video_position")
+        self.register_widget("video_search", "entry_video_search")
 
         playpause_image = builder.get_object("button_playpause").get_child()
         self.register("video_playing", lambda value: playpause_image.set_from_icon_name(
@@ -115,18 +118,19 @@ class Handler (VideoPlayer):
         self.app_status = READY
 
         getGestureConverter = lambda n, f = str, d = '' : lambda value :\
-            ([f(x[n] if n else i) for i, x in enumerate(self.gesture_spans) if x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [d])[0]
+            ([f(x[n] if n else i) for i, x in enumerate(self.gesture_spans) if
+            x[GESTURE_START] <= value // Gst.FRAME <= x[GESTURE_END]] or [d])[0]
         self.getGestureIndex = getGestureConverter(None, int, 0)
 
-        self.register("video_position", builder.get_object("current_gesture_name"),
-                      set_converter=getGestureConverter(GESTURE_NAME))
-        self.register("video_position", builder.get_object("current_gesture_start"),
-                      set_converter=getGestureConverter(GESTURE_START, framesToMinutesStr))
-        self.register("video_position", builder.get_object("current_gesture_end"),
-                      set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
-        self.register("video_position", builder.get_object("current_gesture_end"),
-                      set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
+        self.register_widget("video_position", "current_gesture_name", set_converter=getGestureConverter(GESTURE_NAME))
+        self.register_widget("video_position", "current_gesture_start",
+                             set_converter=getGestureConverter(GESTURE_START, framesToMinutesStr))
+        self.register_widget("video_position", "current_gesture_end",
+                             set_converter=getGestureConverter(GESTURE_END, framesToMinutesStr))
         self.register("video_position", self.updateTime)
+
+        self.register_widget("export_filename_filter")
+        self.register_widget("export_filename_filter_regex")
 
         # gui additional
         self.live_diagram = livediagram.LiveDiagram(builder.get_object("live_diagram"))
@@ -178,6 +182,9 @@ class Handler (VideoPlayer):
         #self.export_dialog.hide()
         self.export_accordion = Accordion(self.builder.get_object('export_builder_accordion'), True)
 
+    def register_widget(self, name, widget_id = None, default_value = None, set_converter = None, get_converter = None):
+        return self.register(name, self.builder.get_object(widget_id or name),
+                             default_value, set_converter, get_converter)
 
     @GObject.Property(type=str)
     def task_name(self): return self.__task_name
@@ -213,6 +220,22 @@ class Handler (VideoPlayer):
     @app_status.setter
     def app_status(self, value):
         self.__app_status = str(value)
+
+    @GObject.Property
+    def export_filename_filter(self): return self.__export_filename_filter
+
+    @export_filename_filter.setter
+    def export_filename_filter_regex(self, value):
+        self.__export_filename_filter = value
+        print(value)
+
+    @GObject.Property
+    def export_filename_filter_regex(self): return self.__export_filename_filter_regex
+
+    @export_filename_filter_regex.setter
+    def export_filename_filter_regex(self, value):
+        self.__export_filename_filter_regex = value
+        print(value)
 
     def onExit(self, *args):
         self.pipeline.set_state(Gst.State.NULL)
@@ -390,8 +413,11 @@ class Handler (VideoPlayer):
 
         self.builder.get_object('export_magnitude_everything').set_active(True)
         self.export_query.get_buffer().clear()
-        for colname in model.kinematics.meta + model.kinematics.columns :
+        for colname in model.kinematics.meta + model.kinematics.columns + model.kinematics.gesture_checkbox_names :
             self.builder.get_object('export_' + colname).set_active(False)
+
+        self.export_filename_filter = ''
+        self.export_filename_filter_regex = False
 
         self.export_dialog.hide()
         return True
@@ -413,7 +439,16 @@ class Handler (VideoPlayer):
             # join in gestures if needed
             if any(x for x in active if x.startswith('Gesture.')) :
                 joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
-                joins.append("inner join Gesture on Transcript.gesture_id = Gesture.id")
+                joins.append('inner join Gesture on Transcript.gesture_id = Gesture.id')
+
+            if self.export_filename_filter :
+                joins.append('inner join Video on Kinematic.video_id = Video.id')
+                if self.export_filename_filter_regex :
+                    conditions.append("Video.file_name regexp '{}'".format(self.export_filename_filter))
+                else :
+                    filter_parts = self.export_filename_filter.split(',')
+                    fragments = ("Video.file_name like '%{}%'".format(x.strip()) for x in filter_parts)
+                    conditions.append('(' + ' or '.join(fragments) + ')')
 
             if self.export_magnitude == EXPORT_TARGET_EVERYTHING :
                 pass

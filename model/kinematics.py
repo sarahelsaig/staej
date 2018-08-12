@@ -82,3 +82,5 @@ columns = [
     'psm_right_velocity_z',
     'psm_right_gripper',
 ]
+
+gesture_checkbox_names = [ 'gesture_id', 'gesture_description' ]
