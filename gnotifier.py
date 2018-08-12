@@ -3,6 +3,8 @@ from gi.repository import GObject, Gtk
 
 Gtk.Widget.get_id = lambda x: Gtk.Buildable.get_name(x)
 
+
+# noinspection PyUnusedLocal
 class GNotifier(GObject.Object) :
     """
     Base class for GObject based ViewModel.
@@ -11,7 +13,7 @@ class GNotifier(GObject.Object) :
 
     widget_types = dict()
 
-    def __updateFromValue(self, value, gtypespec, *args):
+    def __update_from_value(self, value, gtypespec, *args):
         if isinstance(gtypespec, GObject.GParamSpec) :
             name = gtypespec.name
             type_name = gtypespec.value_type.name
@@ -24,7 +26,7 @@ class GNotifier(GObject.Object) :
 
         self.set_property(name, value)
 
-    def register(self, name, handler_or_widget, default_value = None, set_converter = None, get_converter = None):
+    def register(self, name, handler_or_widget, default_value=None, set_converter=None, get_converter=None):
         widget = None
         update = handler_or_widget
         if isinstance(handler_or_widget, Gtk.Widget) :
@@ -41,9 +43,11 @@ class GNotifier(GObject.Object) :
             elif isinstance(widget, Gtk.Entry):
                 update = lambda value : widget.set_text(value)
                 if get_converter is None :
-                    widget_handler = lambda entry, gtypespec = None : self.__updateFromValue(entry.get_text(), gtypespec or name)
+                    widget_handler = lambda entry, gtypespec = None :\
+                        self.__update_from_value(entry.get_text(), gtypespec or name)
                 else :
-                    widget_handler = lambda entry, gtypespec = None: self.__updateFromValue(get_converter(entry.get_text()), gtypespec or name)
+                    widget_handler = lambda entry, gtypespec = None:\
+                        self.__update_from_value(get_converter(entry.get_text()), gtypespec or name)
                 widget.connect('changed', widget_handler)
             elif isinstance(widget, Gtk.Range):
                 update = lambda value : widget.set_value(value)
@@ -54,6 +58,15 @@ class GNotifier(GObject.Object) :
                 widget.connect('change-value', widget_handler)
             elif isinstance(widget, Gtk.Window):
                 update = lambda value : widget.set_title(value)
+            elif isinstance(widget, Gtk.CheckButton): # also includes radiobutton
+                update = lambda value : widget.set_active(bool(value))
+                if get_converter is None :
+                    widget_handler = lambda checkbutton, *args :\
+                        self.set_property(name, bool(checkbutton.get_active()))
+                else :
+                    widget_handler = lambda checkbutton, *args :\
+                        self.set_property(name, get_converter(checkbutton.get_active()))
+                widget.connect('toggled', widget_handler)
             else :
                 for t in self.widget_types : # look up additional handlers, signal_handler is (sender, gtypespec) => value
                     if (isinstance(widget, t)) :
@@ -63,10 +76,10 @@ class GNotifier(GObject.Object) :
                         update = getUpdate(widget)
                         if signal_name and signal_handler:
                             if get_converter is None :
-                                widget_handler = lambda sender, gtypespec : self.__updateFromValue(
+                                widget_handler = lambda sender, gtypespec : self.__update_from_value(
                                     signal_handler(sender, gtypespec), gtypespec)
                             else :
-                                widget_handler = lambda sender, gtypespec : self.__updateFromValue(
+                                widget_handler = lambda sender, gtypespec : self.__update_from_value(
                                     get_converter(signal_handler(sender, gtypespec)), gtypespec)
 
                             widget.connect(signal_name, widget_handler)
