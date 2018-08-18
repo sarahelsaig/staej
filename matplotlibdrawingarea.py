@@ -25,27 +25,27 @@ class MatplotlibDrawingArea (FigureCanvas) :
         return self
 
 
-class TimeLinearPlot(MatplotlibDrawingArea):
-    def __init__(self, step, show_legend = True, **series):
-        self.axis_y = dict()
-        # collect valid series
-        y = list()
-        names = list()
-        for name in series:
-            if series[name] and series[name].__iter__:
-                self.axis_y[name] = series[name]
-                y.append(series[name])
-                names.append(name)
-
-        length = max(map(len, y))
-        figure = Figure()
-        self.subplot = figure.add_subplot(1, 1, 1)
-        self.axis_x = numpy.arange(0.0, step * length, step)
-
-        if show_legend :
-            self.subplot.legend(names)
-
-        MatplotlibDrawingArea.__init__(self, figure)
+#class TimeLinearPlot(MatplotlibDrawingArea):
+#    def __init__(self, step, show_legend = True, **series):
+#        self.axis_y = dict()
+#        # collect valid series
+#        y = list()
+#        names = list()
+#        for name in series:
+#            if series[name] and series[name].__iter__:
+#                self.axis_y[name] = series[name]
+#                y.append(series[name])
+#                names.append(name)
+#
+#        length = max(map(len, y))
+#        figure = Figure()
+#        self.subplot = figure.add_subplot(1, 1, 1)
+#        self.axis_x = numpy.arange(0.0, step * length, step)
+#
+#        if show_legend :
+#            self.subplot.legend(names)
+#
+#        MatplotlibDrawingArea.__init__(self, figure)
 
 
 class TrajectoryPlot(MatplotlibDrawingArea):
