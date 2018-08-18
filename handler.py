@@ -9,7 +9,8 @@ from peewee import fn
 from videoplayer import VideoPlayer
 import livediagram
 import matplotlib
-from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
+#from matplotlibdrawingarea import TimeLinearPlot, TrajectoryPlot
+from matplotlibdrawingarea import TrajectoryPlot
 from collections import namedtuple
 from accordion import Accordion
 
