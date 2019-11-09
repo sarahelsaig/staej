@@ -113,3 +113,10 @@ ENV/
 \#gui\.glade#
 
 file\.mat
+Experimental_setup.zip
+Knot_Tying.zip
+Needle_Passing.zip
+Suturing.zip
+/.vs
+/staej.sln
+/staej.pyproj
