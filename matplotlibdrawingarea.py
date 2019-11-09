@@ -133,8 +133,11 @@ class TrajectoryPlot(MatplotlibDrawingArea):
             else :
                 self.__highlight_points[subplot] = subplot.plot([x], [y], [z], 'ro')
 
-        from IPython import embed
-        #if self.do_embed: embed()
+        try: 
+            from IPython import embed
+            if self.do_embed: embed()
+        except ModuleNotFoundError: 
+            pass
         #for x in self.__highlight_points: x.remove()
 
     def onMove(self, event):

@@ -20,8 +20,10 @@ def debug(vars) :
         for x in vars :
             locals()[x] = vars[x]
         embed()
-    except :
+    except ModuleNotFoundError: 
         pass
+    except Exception as e:
+        print(e)
 
 GestureStoreItem = namedtuple('GestureStoreItem', 'id desc start end')
 
