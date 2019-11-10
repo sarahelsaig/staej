@@ -41,6 +41,7 @@ EXPORT_TARGET_GESTURES = 'gestures'
 EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
 
 EXPORT_SQL_JOINS_WITHGESTURES = 'inner join Transcript on k.video_id = Transcript.video_id and k.frame between Transcript.start and Transcript.end'
+EXPORT_SQL_JOINS_WITHVIDEO = 'inner join Video on k.video_id = Video.id'
 
 
 def add_filter_to_chooser(dialog, name, pattern) :
@@ -439,23 +440,35 @@ class Handler (VideoPlayer):
         else :
             join_gestures = False
             join_video = False
+            join_task = False
 
             # build query
             active = [x.get_name() for x in self.getExportCheckboxes() if x.get_active()]
             for i in range(len(active)):
                 if not join_gestures and active[i].startswith('Gesture.'):
                     join_gestures = True
-                if active[i] == 'Video.video_length' :
+                elif active[i] == 'Video.video_length':
                     active[i] = '(select max(k2.frame) from Kinematic k2 where k2.video_id = k.video_id) video_length'
+                elif active[i].startswith('Video.'):
+                    join_video = True
+                elif active[i].startswith('Task.'):
+                    join_video = True
+                    join_task = True
             selected_columns = ', '.join(active) or '*'
 
             # join in gestures if needed
-            if any(x for x in active if x.startswith('Gesture.')) :
+            if join_gestures :
                 joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
                 joins.append('inner join Gesture on Transcript.gesture_id = Gesture.id')
 
+            if join_video:
+                joins.append(EXPORT_SQL_JOINS_WITHVIDEO)
+
+            if join_task:
+                joins.append('inner join Task on Task.id = Video.task_id')
+
             if self.export_filename_filter :
-                joins.append('inner join Video on k.video_id = Video.id')
+                if not join_video: joins.append(EXPORT_SQL_JOINS_WITHVIDEO)
                 if self.export_filename_filter_regex :
                     conditions.append("Video.file_name regexp '{}'".format(self.export_filename_filter))
                 else :
@@ -480,7 +493,7 @@ class Handler (VideoPlayer):
             elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
                 gesture = self.getSelectedGesture()
                 if not gesture: return
-                joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
+                if not join_gestures : joins.append(EXPORT_SQL_JOINS_WITHGESTURES)
                 conditions.append('Transcript.gesture_id = {}'.format(gesture.id))
 
             joins = ' '.join(set(joins))
