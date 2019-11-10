@@ -40,7 +40,7 @@ EXPORT_TARGET_VIDEO = 'video'
 EXPORT_TARGET_GESTURES = 'gestures'
 EXPORT_TARGET_GESTURE_TYPES = 'gesture_types'
 
-EXPORT_SQL_JOINS_WITHGESTURES = 'inner join Transcript on Kinematic.video_id = Transcript.video_id and Kinematic.frame between Transcript.start and Transcript.end'
+EXPORT_SQL_JOINS_WITHGESTURES = 'inner join Transcript on k.video_id = Transcript.video_id and k.frame between Transcript.start and Transcript.end'
 
 
 def add_filter_to_chooser(dialog, name, pattern) :
@@ -417,14 +417,16 @@ class Handler (VideoPlayer):
 
         self.builder.get_object('export_magnitude_everything').set_active(True)
         self.export_query.get_buffer().clear()
-        for colname in model.kinematics.meta + model.kinematics.columns + model.kinematics.gesture_checkbox_names :
-            self.builder.get_object('export_' + colname).set_active(False)
+        for x in self.getExportCheckboxes(): x.set_active(False)
 
         self.export_filename_filter = ''
         self.export_filename_filter_regex = False
 
         self.export_dialog.hide()
         return True
+
+    def getExportCheckboxes(self):
+        return (x for x in self.builder.get_objects() if type(x) is Gtk.CheckButton and x.get_parent().get_parent().get_name() == 'export_builder')
 
     def onExportDialogSave(self, *dontcare):
         # get SQL query
@@ -435,9 +437,16 @@ class Handler (VideoPlayer):
             # get user query
             query = 'SELECT ' + re.sub(r'^\s*SELECT\s*', '', self.export_query.get_text(), flags=re.IGNORECASE)
         else :
+            join_gestures = False
+            join_video = False
+
             # build query
-            checkbuttons = map(lambda x: self.builder.get_object('export_' + x), model.kinematics.meta + model.kinematics.columns + ['gesture_id', 'gesture_description'])
-            active = [x.get_name() for x in checkbuttons if x.get_active()]
+            active = [x.get_name() for x in self.getExportCheckboxes() if x.get_active()]
+            for i in range(len(active)):
+                if not join_gestures and active[i].startswith('Gesture.'):
+                    join_gestures = True
+                if active[i] == 'Video.video_length' :
+                    active[i] = '(select max(k2.frame) from Kinematic k2 where k2.video_id = k.video_id) video_length'
             selected_columns = ', '.join(active) or '*'
 
             # join in gestures if needed
@@ -446,7 +455,7 @@ class Handler (VideoPlayer):
                 joins.append('inner join Gesture on Transcript.gesture_id = Gesture.id')
 
             if self.export_filename_filter :
-                joins.append('inner join Video on Kinematic.video_id = Video.id')
+                joins.append('inner join Video on k.video_id = Video.id')
                 if self.export_filename_filter_regex :
                     conditions.append("Video.file_name regexp '{}'".format(self.export_filename_filter))
                 else :
@@ -460,14 +469,14 @@ class Handler (VideoPlayer):
                 if not self.video : return
                 videos = model.database.Video.select().where(model.database.Video.task_id == self.video.task_id)
                 video_ids = ', '.join(map(str, videos.select(model.database.Video.id)))
-                conditions.append('Kinematic.video_id in ({})'.format(video_ids))
+                conditions.append('k.video_id in ({})'.format(video_ids))
             elif self.export_magnitude == EXPORT_TARGET_VIDEO :
                 if not self.video : return
-                conditions.append('Kinematic.video_id = {}'.format(self.video.id))
+                conditions.append('k.video_id = {}'.format(self.video.id))
             elif self.export_magnitude == EXPORT_TARGET_GESTURES :
                 gesture = self.getSelectedGesture()
                 if not gesture: return
-                conditions.append('Kinematic.video_id = {} and Kinematic.frame between {} and {}'.format(self.video.id, gesture.start, gesture.end))
+                conditions.append('k.video_id = {} and k.frame between {} and {}'.format(self.video.id, gesture.start, gesture.end))
             elif self.export_magnitude == EXPORT_TARGET_GESTURE_TYPES:
                 gesture = self.getSelectedGesture()
                 if not gesture: return
@@ -477,7 +486,7 @@ class Handler (VideoPlayer):
             joins = ' '.join(set(joins))
             conditions = ' '.join(set(conditions))
             conditions = ('where {}'.format(conditions)) if conditions else ''
-            query = 'SELECT {} from Kinematic {} {}'.format(selected_columns.replace('Gesture.id', 'Gesture.id as gesture_id'), joins, conditions)
+            query = 'SELECT {} from Kinematic k {} {}'.format(selected_columns.replace('Gesture.id', 'Gesture.id as gesture_id'), joins, conditions)
 
         # get export file type
         filetype = next(x.get_name().replace('export_filetype_', '') for x in self.export_filetype_default.get_group() if x.get_active())
