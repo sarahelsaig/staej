@@ -1603,7 +1603,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_total">
                                 <property name="label" translatable="yes">grs_total</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_total</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1618,7 +1618,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_tissue">
                                 <property name="label" translatable="yes">grs_tissue</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_tissue</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1633,7 +1633,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_suture">
                                 <property name="label" translatable="yes">grs_suture</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_suture</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1648,7 +1648,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_time">
                                 <property name="label" translatable="yes">grs_time</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_time</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1663,7 +1663,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_flow">
                                 <property name="label" translatable="yes">grs_flow</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_flow</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1678,7 +1678,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_performance">
                                 <property name="label" translatable="yes">grs_performance</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_performance</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1693,7 +1693,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_grs_quality">
                                 <property name="label" translatable="yes">grs_quality</property>
-                                <property name="name">Video.skill_level</property>
+                                <property name="name">Video.grs_quality</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
