@@ -72,6 +72,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkBox" id="export_builder_accordion">
+                        <property name="name">export_builder</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
@@ -90,6 +91,7 @@
                         </child>
                         <child>
                           <object class="GtkBox">
+                            <property name="name">export_builder</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -201,7 +203,7 @@
                                 <property name="margin_left">5</property>
                                 <property name="margin_right">5</property>
                                 <property name="margin_top">5</property>
-                                <property name="label" translatable="yes">File Name FIlters</property>
+                                <property name="label" translatable="yes">File Name Filters</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -276,7 +278,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_id">
                                 <property name="label" translatable="yes">id</property>
-                                <property name="name">Kinematic.id</property>
+                                <property name="name">k.id</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -291,7 +293,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_video_id">
                                 <property name="label" translatable="yes">video_id</property>
-                                <property name="name">Kinematic.video_id</property>
+                                <property name="name">k.video_id</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -306,7 +308,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_frame">
                                 <property name="label" translatable="yes">frame</property>
-                                <property name="name">Kinematic.frame</property>
+                                <property name="name">k.frame</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -321,7 +323,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_pos_x">
                                 <property name="label" translatable="yes">mtm_left_pos_x</property>
-                                <property name="name">Kinematic.mtm_left_pos_x</property>
+                                <property name="name">k.mtm_left_pos_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -336,7 +338,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_pos_y">
                                 <property name="label" translatable="yes">mtm_left_pos_y</property>
-                                <property name="name">Kinematic.mtm_left_pos_y</property>
+                                <property name="name">k.mtm_left_pos_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -351,7 +353,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_pos_z">
                                 <property name="label" translatable="yes">mtm_left_pos_z</property>
-                                <property name="name">Kinematic.mtm_left_pos_z</property>
+                                <property name="name">k.mtm_left_pos_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -366,7 +368,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_11">
                                 <property name="label" translatable="yes">mtm_left_rot_11</property>
-                                <property name="name">Kinematic.mtm_left_rot_11</property>
+                                <property name="name">k.mtm_left_rot_11</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -381,7 +383,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_12">
                                 <property name="label" translatable="yes">mtm_left_rot_12</property>
-                                <property name="name">Kinematic.mtm_left_rot_12</property>
+                                <property name="name">k.mtm_left_rot_12</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -396,7 +398,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_13">
                                 <property name="label" translatable="yes">mtm_left_rot_13</property>
-                                <property name="name">Kinematic.mtm_left_rot_13</property>
+                                <property name="name">k.mtm_left_rot_13</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -411,7 +413,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_21">
                                 <property name="label" translatable="yes">mtm_left_rot_21</property>
-                                <property name="name">Kinematic.mtm_left_rot_21</property>
+                                <property name="name">k.mtm_left_rot_21</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -426,7 +428,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_22">
                                 <property name="label" translatable="yes">mtm_left_rot_22</property>
-                                <property name="name">Kinematic.mtm_left_rot_22</property>
+                                <property name="name">k.mtm_left_rot_22</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -441,7 +443,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_23">
                                 <property name="label" translatable="yes">mtm_left_rot_23</property>
-                                <property name="name">Kinematic.mtm_left_rot_23</property>
+                                <property name="name">k.mtm_left_rot_23</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -456,7 +458,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_31">
                                 <property name="label" translatable="yes">mtm_left_rot_31</property>
-                                <property name="name">Kinematic.mtm_left_rot_31</property>
+                                <property name="name">k.mtm_left_rot_31</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -471,7 +473,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_32">
                                 <property name="label" translatable="yes">mtm_left_rot_32</property>
-                                <property name="name">Kinematic.mtm_left_rot_32</property>
+                                <property name="name">k.mtm_left_rot_32</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -486,7 +488,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_rot_33">
                                 <property name="label" translatable="yes">mtm_left_rot_33</property>
-                                <property name="name">Kinematic.mtm_left_rot_33</property>
+                                <property name="name">k.mtm_left_rot_33</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -501,7 +503,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_a">
                                 <property name="label" translatable="yes">mtm_left_velocity_a</property>
-                                <property name="name">Kinematic.mtm_left_velocity_a</property>
+                                <property name="name">k.mtm_left_velocity_a</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -516,7 +518,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_b">
                                 <property name="label" translatable="yes">mtm_left_velocity_b</property>
-                                <property name="name">Kinematic.mtm_left_velocity_b</property>
+                                <property name="name">k.mtm_left_velocity_b</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -531,7 +533,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_c">
                                 <property name="label" translatable="yes">mtm_left_velocity_c</property>
-                                <property name="name">Kinematic.mtm_left_velocity_c</property>
+                                <property name="name">k.mtm_left_velocity_c</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -546,7 +548,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_x">
                                 <property name="label" translatable="yes">mtm_left_velocity_x</property>
-                                <property name="name">Kinematic.mtm_left_velocity_x</property>
+                                <property name="name">k.mtm_left_velocity_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -561,7 +563,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_y">
                                 <property name="label" translatable="yes">mtm_left_velocity_y</property>
-                                <property name="name">Kinematic.mtm_left_velocity_y</property>
+                                <property name="name">k.mtm_left_velocity_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -576,7 +578,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_velocity_z">
                                 <property name="label" translatable="yes">mtm_left_velocity_z</property>
-                                <property name="name">Kinematic.mtm_left_velocity_z</property>
+                                <property name="name">k.mtm_left_velocity_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -591,7 +593,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_left_gripper">
                                 <property name="label" translatable="yes">mtm_left_gripper</property>
-                                <property name="name">Kinematic.mtm_left_gripper</property>
+                                <property name="name">k.mtm_left_gripper</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -606,7 +608,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_pos_x">
                                 <property name="label" translatable="yes">mtm_right_pos_x</property>
-                                <property name="name">Kinematic.mtm_right_pos_x</property>
+                                <property name="name">k.mtm_right_pos_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -621,7 +623,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_pos_y">
                                 <property name="label" translatable="yes">mtm_right_pos_y</property>
-                                <property name="name">Kinematic.mtm_right_pos_y</property>
+                                <property name="name">k.mtm_right_pos_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -636,7 +638,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_pos_z">
                                 <property name="label" translatable="yes">mtm_right_pos_z</property>
-                                <property name="name">Kinematic.mtm_right_pos_z</property>
+                                <property name="name">k.mtm_right_pos_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -651,7 +653,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_11">
                                 <property name="label" translatable="yes">mtm_right_rot_11</property>
-                                <property name="name">Kinematic.mtm_right_rot_11</property>
+                                <property name="name">k.mtm_right_rot_11</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -666,7 +668,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_12">
                                 <property name="label" translatable="yes">mtm_right_rot_12</property>
-                                <property name="name">Kinematic.mtm_right_rot_12</property>
+                                <property name="name">k.mtm_right_rot_12</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -681,7 +683,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_13">
                                 <property name="label" translatable="yes">mtm_right_rot_13</property>
-                                <property name="name">Kinematic.mtm_right_rot_13</property>
+                                <property name="name">k.mtm_right_rot_13</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -696,7 +698,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_21">
                                 <property name="label" translatable="yes">mtm_right_rot_21</property>
-                                <property name="name">Kinematic.mtm_right_rot_21</property>
+                                <property name="name">k.mtm_right_rot_21</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -711,7 +713,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_22">
                                 <property name="label" translatable="yes">mtm_right_rot_22</property>
-                                <property name="name">Kinematic.mtm_right_rot_22</property>
+                                <property name="name">k.mtm_right_rot_22</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -726,7 +728,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_23">
                                 <property name="label" translatable="yes">mtm_right_rot_23</property>
-                                <property name="name">Kinematic.mtm_right_rot_23</property>
+                                <property name="name">k.mtm_right_rot_23</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -741,7 +743,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_31">
                                 <property name="label" translatable="yes">mtm_right_rot_31</property>
-                                <property name="name">Kinematic.mtm_right_rot_31</property>
+                                <property name="name">k.mtm_right_rot_31</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -756,7 +758,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_32">
                                 <property name="label" translatable="yes">mtm_right_rot_32</property>
-                                <property name="name">Kinematic.mtm_right_rot_32</property>
+                                <property name="name">k.mtm_right_rot_32</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -771,7 +773,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_rot_33">
                                 <property name="label" translatable="yes">mtm_right_rot_33</property>
-                                <property name="name">Kinematic.mtm_right_rot_33</property>
+                                <property name="name">k.mtm_right_rot_33</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -786,7 +788,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_a">
                                 <property name="label" translatable="yes">mtm_right_velocity_a</property>
-                                <property name="name">Kinematic.mtm_right_velocity_a</property>
+                                <property name="name">k.mtm_right_velocity_a</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -801,7 +803,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_b">
                                 <property name="label" translatable="yes">mtm_right_velocity_b</property>
-                                <property name="name">Kinematic.mtm_right_velocity_b</property>
+                                <property name="name">k.mtm_right_velocity_b</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -816,7 +818,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_c">
                                 <property name="label" translatable="yes">mtm_right_velocity_c</property>
-                                <property name="name">Kinematic.mtm_right_velocity_c</property>
+                                <property name="name">k.mtm_right_velocity_c</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -831,7 +833,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_x">
                                 <property name="label" translatable="yes">mtm_right_velocity_x</property>
-                                <property name="name">Kinematic.mtm_right_velocity_x</property>
+                                <property name="name">k.mtm_right_velocity_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -846,7 +848,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_y">
                                 <property name="label" translatable="yes">mtm_right_velocity_y</property>
-                                <property name="name">Kinematic.mtm_right_velocity_y</property>
+                                <property name="name">k.mtm_right_velocity_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -861,7 +863,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_velocity_z">
                                 <property name="label" translatable="yes">mtm_right_velocity_z</property>
-                                <property name="name">Kinematic.mtm_right_velocity_z</property>
+                                <property name="name">k.mtm_right_velocity_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -876,7 +878,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_mtm_right_gripper">
                                 <property name="label" translatable="yes">mtm_right_gripper</property>
-                                <property name="name">Kinematic.mtm_right_gripper</property>
+                                <property name="name">k.mtm_right_gripper</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -891,7 +893,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_pos_x">
                                 <property name="label" translatable="yes">psm_left_pos_x</property>
-                                <property name="name">Kinematic.psm_left_pos_x</property>
+                                <property name="name">k.psm_left_pos_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -906,7 +908,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_pos_y">
                                 <property name="label" translatable="yes">psm_left_pos_y</property>
-                                <property name="name">Kinematic.psm_left_pos_y</property>
+                                <property name="name">k.psm_left_pos_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -921,7 +923,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_pos_z">
                                 <property name="label" translatable="yes">psm_left_pos_z</property>
-                                <property name="name">Kinematic.psm_left_pos_z</property>
+                                <property name="name">k.psm_left_pos_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -936,7 +938,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_11">
                                 <property name="label" translatable="yes">psm_left_rot_11</property>
-                                <property name="name">Kinematic.psm_left_rot_11</property>
+                                <property name="name">k.psm_left_rot_11</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -951,7 +953,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_12">
                                 <property name="label" translatable="yes">psm_left_rot_12</property>
-                                <property name="name">Kinematic.psm_left_rot_12</property>
+                                <property name="name">k.psm_left_rot_12</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -966,7 +968,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_13">
                                 <property name="label" translatable="yes">psm_left_rot_13</property>
-                                <property name="name">Kinematic.psm_left_rot_13</property>
+                                <property name="name">k.psm_left_rot_13</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -981,7 +983,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_21">
                                 <property name="label" translatable="yes">psm_left_rot_21</property>
-                                <property name="name">Kinematic.psm_left_rot_21</property>
+                                <property name="name">k.psm_left_rot_21</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -996,7 +998,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_22">
                                 <property name="label" translatable="yes">psm_left_rot_22</property>
-                                <property name="name">Kinematic.psm_left_rot_22</property>
+                                <property name="name">k.psm_left_rot_22</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1011,7 +1013,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_23">
                                 <property name="label" translatable="yes">psm_left_rot_23</property>
-                                <property name="name">Kinematic.psm_left_rot_23</property>
+                                <property name="name">k.psm_left_rot_23</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1026,7 +1028,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_31">
                                 <property name="label" translatable="yes">psm_left_rot_31</property>
-                                <property name="name">Kinematic.psm_left_rot_31</property>
+                                <property name="name">k.psm_left_rot_31</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1041,7 +1043,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_32">
                                 <property name="label" translatable="yes">psm_left_rot_32</property>
-                                <property name="name">Kinematic.psm_left_rot_32</property>
+                                <property name="name">k.psm_left_rot_32</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1056,7 +1058,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_rot_33">
                                 <property name="label" translatable="yes">psm_left_rot_33</property>
-                                <property name="name">Kinematic.psm_left_rot_33</property>
+                                <property name="name">k.psm_left_rot_33</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1071,7 +1073,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_a">
                                 <property name="label" translatable="yes">psm_left_velocity_a</property>
-                                <property name="name">Kinematic.psm_left_velocity_a</property>
+                                <property name="name">k.psm_left_velocity_a</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1086,7 +1088,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_b">
                                 <property name="label" translatable="yes">psm_left_velocity_b</property>
-                                <property name="name">Kinematic.psm_left_velocity_b</property>
+                                <property name="name">k.psm_left_velocity_b</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1101,7 +1103,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_c">
                                 <property name="label" translatable="yes">psm_left_velocity_c</property>
-                                <property name="name">Kinematic.psm_left_velocity_c</property>
+                                <property name="name">k.psm_left_velocity_c</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1116,7 +1118,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_x">
                                 <property name="label" translatable="yes">psm_left_velocity_x</property>
-                                <property name="name">Kinematic.psm_left_velocity_x</property>
+                                <property name="name">k.psm_left_velocity_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1131,7 +1133,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_y">
                                 <property name="label" translatable="yes">psm_left_velocity_y</property>
-                                <property name="name">Kinematic.psm_left_velocity_y</property>
+                                <property name="name">k.psm_left_velocity_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1146,7 +1148,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_velocity_z">
                                 <property name="label" translatable="yes">psm_left_velocity_z</property>
-                                <property name="name">Kinematic.psm_left_velocity_z</property>
+                                <property name="name">k.psm_left_velocity_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1161,7 +1163,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_left_gripper">
                                 <property name="label" translatable="yes">psm_left_gripper</property>
-                                <property name="name">Kinematic.psm_left_gripper</property>
+                                <property name="name">k.psm_left_gripper</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1176,7 +1178,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_pos_x">
                                 <property name="label" translatable="yes">psm_right_pos_x</property>
-                                <property name="name">Kinematic.psm_right_pos_x</property>
+                                <property name="name">k.psm_right_pos_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1191,7 +1193,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_pos_y">
                                 <property name="label" translatable="yes">psm_right_pos_y</property>
-                                <property name="name">Kinematic.psm_right_pos_y</property>
+                                <property name="name">k.psm_right_pos_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1206,7 +1208,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_pos_z">
                                 <property name="label" translatable="yes">psm_right_pos_z</property>
-                                <property name="name">Kinematic.psm_right_pos_z</property>
+                                <property name="name">k.psm_right_pos_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1221,7 +1223,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_11">
                                 <property name="label" translatable="yes">psm_right_rot_11</property>
-                                <property name="name">Kinematic.psm_right_rot_11</property>
+                                <property name="name">k.psm_right_rot_11</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1236,7 +1238,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_12">
                                 <property name="label" translatable="yes">psm_right_rot_12</property>
-                                <property name="name">Kinematic.psm_right_rot_12</property>
+                                <property name="name">k.psm_right_rot_12</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1251,7 +1253,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_13">
                                 <property name="label" translatable="yes">psm_right_rot_13</property>
-                                <property name="name">Kinematic.psm_right_rot_13</property>
+                                <property name="name">k.psm_right_rot_13</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1266,7 +1268,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_21">
                                 <property name="label" translatable="yes">psm_right_rot_21</property>
-                                <property name="name">Kinematic.psm_right_rot_21</property>
+                                <property name="name">k.psm_right_rot_21</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1281,7 +1283,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_22">
                                 <property name="label" translatable="yes">psm_right_rot_22</property>
-                                <property name="name">Kinematic.psm_right_rot_22</property>
+                                <property name="name">k.psm_right_rot_22</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1296,7 +1298,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_23">
                                 <property name="label" translatable="yes">psm_right_rot_23</property>
-                                <property name="name">Kinematic.psm_right_rot_23</property>
+                                <property name="name">k.psm_right_rot_23</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1311,7 +1313,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_31">
                                 <property name="label" translatable="yes">psm_right_rot_31</property>
-                                <property name="name">Kinematic.psm_right_rot_31</property>
+                                <property name="name">k.psm_right_rot_31</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1326,7 +1328,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_32">
                                 <property name="label" translatable="yes">psm_right_rot_32</property>
-                                <property name="name">Kinematic.psm_right_rot_32</property>
+                                <property name="name">k.psm_right_rot_32</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1341,7 +1343,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_rot_33">
                                 <property name="label" translatable="yes">psm_right_rot_33</property>
-                                <property name="name">Kinematic.psm_right_rot_33</property>
+                                <property name="name">k.psm_right_rot_33</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1356,7 +1358,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_a">
                                 <property name="label" translatable="yes">psm_right_velocity_a</property>
-                                <property name="name">Kinematic.psm_right_velocity_a</property>
+                                <property name="name">k.psm_right_velocity_a</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1371,7 +1373,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_b">
                                 <property name="label" translatable="yes">psm_right_velocity_b</property>
-                                <property name="name">Kinematic.psm_right_velocity_b</property>
+                                <property name="name">k.psm_right_velocity_b</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1386,7 +1388,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_c">
                                 <property name="label" translatable="yes">psm_right_velocity_c</property>
-                                <property name="name">Kinematic.psm_right_velocity_c</property>
+                                <property name="name">k.psm_right_velocity_c</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1401,7 +1403,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_x">
                                 <property name="label" translatable="yes">psm_right_velocity_x</property>
-                                <property name="name">Kinematic.psm_right_velocity_x</property>
+                                <property name="name">k.psm_right_velocity_x</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1416,7 +1418,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_y">
                                 <property name="label" translatable="yes">psm_right_velocity_y</property>
-                                <property name="name">Kinematic.psm_right_velocity_y</property>
+                                <property name="name">k.psm_right_velocity_y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1431,7 +1433,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_velocity_z">
                                 <property name="label" translatable="yes">psm_right_velocity_z</property>
-                                <property name="name">Kinematic.psm_right_velocity_z</property>
+                                <property name="name">k.psm_right_velocity_z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1446,7 +1448,7 @@
                             <child>
                               <object class="GtkCheckButton" id="export_psm_right_gripper">
                                 <property name="label" translatable="yes">psm_right_gripper</property>
-                                <property name="name">Kinematic.psm_right_gripper</property>
+                                <property name="name">k.psm_right_gripper</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1521,7 +1523,209 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkButton">
+                            <property name="label" translatable="yes">Video Columns</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkCheckButton" id="export_task_id">
+                                <property name="label" translatable="yes">task_id</property>
+                                <property name="name">Video.task_id</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_task_name">
+                                <property name="label" translatable="yes">task_name</property>
+                                <property name="name">Task.name</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_file_name">
+                                <property name="label" translatable="yes">file_name</property>
+                                <property name="name">Video.file_name</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_skill_level">
+                                <property name="label" translatable="yes">skill_level</property>
+                                <property name="name">Video.skill_level</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_total">
+                                <property name="label" translatable="yes">grs_total</property>
+                                <property name="name">Video.grs_total</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_tissue">
+                                <property name="label" translatable="yes">grs_tissue</property>
+                                <property name="name">Video.grs_tissue</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_suture">
+                                <property name="label" translatable="yes">grs_suture</property>
+                                <property name="name">Video.grs_suture</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">6</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_time">
+                                <property name="label" translatable="yes">grs_time</property>
+                                <property name="name">Video.grs_time</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_flow">
+                                <property name="label" translatable="yes">grs_flow</property>
+                                <property name="name">Video.grs_flow</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_performance">
+                                <property name="label" translatable="yes">grs_performance</property>
+                                <property name="name">Video.grs_performance</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_grs_quality">
+                                <property name="label" translatable="yes">grs_quality</property>
+                                <property name="name">Video.grs_quality</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="export_video_length">
+                                <property name="label" translatable="yes">video_length (VERY SLOW!!)</property>
+                                <property name="name">Video.video_length</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">11</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder/>
