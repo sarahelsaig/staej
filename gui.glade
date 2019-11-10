@@ -1707,7 +1707,7 @@
                             </child>
                             <child>
                               <object class="GtkCheckButton" id="export_video_length">
-                                <property name="label" translatable="yes">video_length (slow!!)</property>
+                                <property name="label" translatable="yes">video_length (VERY SLOW!!)</property>
                                 <property name="name">Video.video_length</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
